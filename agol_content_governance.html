@@ -40,7 +40,41 @@ $('detail').innerHTML='<h3>'+escapeHTML(i.title)+'</h3><p><span class="tag">'+es
 function drawGraph(id){const svg=$('graph');svg.innerHTML='';const neighbors=[...new Set([...inward(id),...outward(id)])],deep=transitive(id).filter(x=>!neighbors.includes(x)),ids=[id,...neighbors.slice(0,12),...deep.slice(0,10)],positions=new Map([[id,{x:300,y:170}]]);const first=neighbors.slice(0,12),next=deep.slice(0,10);first.forEach((n,j)=>{const a=(2*Math.PI*j/Math.max(first.length,1))-Math.PI/2;positions.set(n,{x:300+138*Math.cos(a),y:170+103*Math.sin(a)})});next.forEach((n,j)=>{const a=2*Math.PI*j/Math.max(next.length,1)-Math.PI/2;positions.set(n,{x:300+248*Math.cos(a),y:170+145*Math.sin(a)})});function add(type,attrs,text){const el=document.createElementNS('http://www.w3.org/2000/svg',type);Object.entries(attrs||{}).forEach(([k,v])=>el.setAttribute(k,v));if(text!=null)el.textContent=text;svg.append(el);return el}const defs=add('defs');const marker=document.createElementNS('http://www.w3.org/2000/svg','marker');marker.setAttribute('id','agol-arrow');marker.setAttribute('markerWidth','5');marker.setAttribute('markerHeight','5');marker.setAttribute('refX','9');marker.setAttribute('refY','3');marker.setAttribute('orient','auto');const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M0 0 L6 3 L0 6');path.setAttribute('fill','#83a5be');marker.append(path);defs.append(marker);
 state.edges.filter(e=>positions.has(e.from)&&positions.has(e.to)).forEach(e=>{const a=positions.get(e.from),b=positions.get(e.to);add('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'edge '+(e.to===id||e.from===id?'direct':''),'marker-end':'url(#agol-arrow)'})});ids.forEach(k=>{const p=positions.get(k),item=getItem(k),node=add('g',{class:'node','data-node':k});const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');circle.setAttribute('cx',p.x);circle.setAttribute('cy',p.y);circle.setAttribute('r',k===id?21:12);circle.setAttribute('fill',k===id?'#41c6ab':colors[kind(item||{})]);node.append(circle);const title=document.createElementNS('http://www.w3.org/2000/svg','title');title.textContent=(item?.title||k)+' ('+(item?.type||'')+')';node.append(title);const label=document.createElementNS('http://www.w3.org/2000/svg','text');label.setAttribute('x',p.x);label.setAttribute('y',p.y+(k===id?39:26));label.setAttribute('text-anchor','middle');const txt=(item?.title||k);label.textContent=txt.length>22?txt.slice(0,20)+'…':txt;node.append(label);node.addEventListener('click',()=>select(k))});}
 async function request(path,params={}){if(!state.credential)throw Error('Not signed in');const token=state.credential.token;const url=state.portal.replace(/\/$/,'')+'/sharing/rest/'+path.replace(/^\//,'');const body=new URLSearchParams({f:'json',token,...params});const res=await fetch(url,{method:'POST',body,headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},mode:'cors'});if(!res.ok)throw Error('HTTP '+res.status+' while accessing '+path);const data=await res.json();if(data.error)throw Error(data.error.message||'ArcGIS API error');return data}
-async function auth(){if(!window.require){setStatus('ArcGIS SDK failed to load. Check internet/CDN access.',true);return}const id=$('appId').value.trim();if(!id){setStatus('Enter an OAuth Client ID registered for this hosted page.',true);return}let url=$('portal').value.trim().replace(/\/$/,'');if(!/^https:\/\/[\w.-]+(?::\d+)?(?:\/[^?#]*)?$/.test(url)){setStatus('Enter a valid HTTPS portal URL.',true);return}state.portal=url;setStatus('Opening ArcGIS sign-in…');window.require(['esri/identity/OAuthInfo','esri/identity/IdentityManager'],async(OAuthInfo,identityManager)=>{try{const info=new OAuthInfo({appId:id,portalUrl:url,popup:false,flowType:'auto'});state.oauth=info;identityManager.registerOAuthInfos([info]);state.credential=await identityManager.getCredential(url+'/sharing');const me=await request('community/self');state.user=me.username;state.orgid=me.orgId;sessionStorage.setItem('agol_governance_client_id',id);sessionStorage.setItem('agol_governance_portal',url);$('account').textContent='Signed in: '+me.username+' · Read-only';for(const name of ['mine','org','refresh'])$(name).disabled=false;setStatus('Connected. Loading your items…');await load('mine')}catch(e){setStatus('Sign-in failed: '+e.message,true)}})}
+async function auth(resume=false){
+  if(!window.require){setStatus('ArcGIS SDK failed to load. Check internet/CDN access.',true);return}
+  const id=$('appId').value.trim();
+  if(!id){if(!resume)setStatus('Enter an OAuth Client ID registered for this hosted page.',true);return}
+  const url=$('portal').value.trim().replace(/\/$/,'');
+  if(!/^https:\/\/[\w.-]+(?::\d+)?(?:\/[^?#]*)?$/.test(url)){setStatus('Enter a valid HTTPS portal URL.',true);return}
+  state.portal=url;
+  // Persist non-secret configuration BEFORE navigating to the OAuth login page.
+  try{sessionStorage.setItem('agol_governance_client_id',id);sessionStorage.setItem('agol_governance_portal',url)}catch(_){}
+  setStatus(resume?'Checking existing ArcGIS sign-in…':'Opening ArcGIS sign-in…');
+  window.require(['esri/identity/OAuthInfo','esri/identity/IdentityManager'],async(OAuthInfo,identityManager)=>{
+    try{
+      const info=new OAuthInfo({appId:id,portalUrl:url,popup:false,flowType:'auto'});
+      state.oauth=info;
+      identityManager.registerOAuthInfos([info]);
+      const endpoint=url+'/sharing';
+      // On reload, never trigger another login unexpectedly. Only restore a previous sign-in.
+      if(resume){
+        try{state.credential=await identityManager.checkSignInStatus(endpoint)}
+        catch(_){setStatus('Not connected. Select Sign in with ArcGIS to connect.');return}
+      }else{
+        try{state.credential=await identityManager.checkSignInStatus(endpoint)}
+        catch(_){state.credential=await identityManager.getCredential(endpoint)}
+      }
+      const me=await request('community/self');
+      if(!me.username)throw Error('Unable to obtain the signed-in ArcGIS username');
+      state.user=me.username;
+      state.orgid=me.orgId;
+      $('account').textContent='Signed in: '+me.username+' · Read-only';
+      for(const name of ['mine','org','refresh'])$(name).disabled=false;
+      setStatus('Connected. Loading your items…');
+      await load('mine');
+    }catch(e){setStatus('Sign-in failed: '+(e?.message||String(e)),true)}
+  },err=>setStatus('Unable to load ArcGIS authentication modules: '+(err?.message||String(err)),true))
+}
 async function load(scope){if(!state.credential){setStatus('Sign in first.',true);return}if(scope==='org'&&!state.orgid){setStatus('Your account is not associated with an organisation.',true);return}state.stopped=false;state.loading=true;state.partial=true;state.scope=scope;$('scope').textContent=scope==='mine'?'My content':'Organisation content';$('progress').hidden=false;$('stop').hidden=false;['mine','org','refresh'].forEach(k=>$(k).disabled=true);const q=scope==='mine'?'owner:'+state.user:'orgid:'+state.orgid;let items=[],start=1,total=0;try{do{if(state.stopped)break;const batch=await request('search',{q,num:'100',start:String(start),sortField:'modified',sortOrder:'desc'});items.push(...(batch.results||[]));total=batch.total||items.length;start=batch.nextStart||-1;setStatus('Loading inventory: '+items.length.toLocaleString()+' / '+total.toLocaleString());$('bar').style.width=Math.min(40,40*items.length/Math.max(total,1))+'%';if(items.length>=10000){state.partial=true;break}}while(start>0);state.items=items.map(({id,title,type,owner,access,modified,url,typeKeywords})=>({id,title:type&&title||id,type:type||'Unknown',owner:owner||'',access:access||'',modified:modified||0,url:url||'',typeKeywords:typeKeywords||[]}));state.edges=[];state.selected=null;render();const scan=state.items.filter(i=>DATA_TYPES.test(i.type)||/Web Map|Web Scene|Feature Service|Feature Layer|Map Service/i.test(i.type));let index=0,done=0,fail=0;const allIds=new Set(state.items.map(i=>i.id));const serviceMap=new Map();for(const it of state.items){const u=normalizeUrl(it.url);if(u)serviceMap.set(u,it.id)}const edgeSet=new Set();function harvest(data,from){const refs=new Set(),visited=new WeakSet();function walk(o,key='',depth=0){if(depth>35||o==null)return;if(typeof o==='string'){if(isId(o)&&/^(itemid|webmap|webmapid|webscene|websceneid|mapid|sceneid|sourceitemid|portalitemid|item|id)$/i.test(key))refs.add(o.toLowerCase());const u=normalizeUrl(o);if(/^https?:\/\//.test(u)){if(serviceMap.has(u))refs.add(serviceMap.get(u));else for(const [known,target] of serviceMap){if(u.startsWith(known+'/')&&/^\/(?:\d+|featureserver|mapserver|imageserver)/i.test(u.slice(known.length)))refs.add(target)}}return}if(typeof o!=='object'||visited.has(o))return;visited.add(o);if(Array.isArray(o)){o.forEach(v=>walk(v,key,depth+1));return}for(const [k,v] of Object.entries(o)){if(k==='token'||k==='password')continue;walk(v,k,depth+1)}}walk(data);for(const to of refs){if(allIds.has(to)&&to!==from)edgeSet.add(from+'|'+to)}}
 // URL references in item metadata are also considered (e.g. an app configured against a service).
 for(const it of state.items){if(!it.url)continue;const url=normalizeUrl(it.url);for(const [service,id] of serviceMap){if(id!==it.id&&url===service)edgeSet.add(it.id+'|'+id)}}
@@ -51,7 +85,7 @@ $('demo').onclick=demo;$('login').onclick=auth;$('mine').onclick=()=>load('mine'
 // Persist only public configuration values, never access tokens or credentials.
 try{$('appId').value=sessionStorage.getItem('agol_governance_client_id')||'';$('portal').value=sessionStorage.getItem('agol_governance_portal')||'https://www.arcgis.com'}catch(_){}
 demo();
-// Resume the OAuth code redirect after ArcGIS returns to the hosted page.
-if (new URLSearchParams(window.location.search).has('code') && $('appId').value) auth();
+// Restore authenticated sessions (SDK may remove OAuth code from the URL before this runs).
+if ($('appId').value) auth(true);
 })();
 </script></body></html>
