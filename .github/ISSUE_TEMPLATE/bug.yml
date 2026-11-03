@@ -1,0 +1,27 @@
+name: Bug
+description: Something in this project is broken.
+labels: ["type: bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Include the command and the error. No secrets or client records.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: On the pilot scope if possible (`main.py`, not `--scope full`).
+  - type: input
+    id: version
+    attributes:
+      label: Module versions
+      description: From references/modules.lock, if a module is involved.

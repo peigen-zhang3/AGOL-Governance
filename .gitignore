@@ -1,0 +1,104 @@
+# =============================================================================
+# .gitignore — Morphum geospatial project template
+# Order matters: broad ignores first, then explicit "un-ignores" (!) for the
+# tracked folders (data/tracked/, tests/fixtures/). What each data/ folder is:
+# data/README.md.
+#
+# NOTE: git has NO inline comments in .gitignore — text after a pattern becomes
+# part of the pattern, silently disabling the rule. Comment on its own line,
+# always. (Enforced by tests/test_template_structure.py.)
+# =============================================================================
+
+# --- Secrets / credentials (NEVER commit) ------------------------------------
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pfx
+credentials.json
+# per-project AGOL wiring may hold item ids / keys
+layer_map.json
+
+# --- Claude Code personal overrides ------------------------------------------
+.claude/settings.local.json
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env-venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- Geospatial data (large binaries) ----------------------------------------
+# Real project data is never committed, except in the opt-in data/tracked/
+# (caps and rules: data/README.md; CI enforces them). Synthetic test fixtures
+# live under tests/fixtures/. Both are explicitly un-ignored below.
+data/inputs/*
+# per-scope read-through cache of the sources (pilot, full, ...)
+data/cache/*
+data/outputs/*
+# governed extracts of real external data (see get-data skill)
+data/library/*
+*.parquet
+*.tif
+*.tiff
+*.gpkg
+*.gdb/
+*.las
+*.laz
+# generated parameter spreadsheets (round-tripped from TOML)
+config/*.xlsx
+
+# --- Keep sentinels + synthetic test fixtures ---------------------------------
+!data/inputs/.gitkeep
+!data/cache/.gitkeep
+!data/outputs/.gitkeep
+!data/library/.gitkeep
+!data/README.md
+!tests/fixtures/
+!tests/fixtures/**
+# Opt-in tracked real data (a scope with track = true): its cache and main
+# outputs; named review runs under it stay ignored.
+!data/tracked/
+!data/tracked/**
+data/tracked/**/runs/
+
+# --- Reports / render output -------------------------------------------------
+# (v1.x wrote reports to a root output/ folder; kept ignored for old projects)
+output/
+*.pdf
+# allow committed documentation PDFs if any
+!docs/**/*.pdf
+
+# --- References: allow supporting docs/images (PDFs, screenshots, briefs) -----
+# The global *.pdf / image ignores above would otherwise swallow anything dropped
+# in references/. Un-ignore that tree, but keep DATA out — put a description of a
+# dataset here, never the dataset itself (data belongs in data/inputs/).
+!references/**
+references/**/*.parquet
+references/**/*.gpkg
+references/**/*.tif
+references/**/*.tiff
+references/**/*.las
+references/**/*.laz
+references/**/*.gdb/
+
+# --- OS / editor -------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# --- Playwright browser cache ------------------------------------------------
+.cache/ms-playwright/
+
+# Claude Code worktrees (Remote Control --spawn worktree, /worktrees)
+.claude/worktrees/

@@ -1,0 +1,8 @@
+{
+  "_comment": "Copy to settings.local.json (git-ignored) for PERSONAL overrides — extra permissions, a different model, machine-specific env. Never commit real secrets here; secrets belong in .env. The docker-compose allowance below only makes sense for Claude running ON THE HOST — inside the dev container there is no Docker socket, and granting compose rights to a host session bypasses the container isolation, so think before enabling it.",
+  "permissions": {
+    "allow": [
+      "Bash(docker compose:*)"
+    ]
+  }
+}

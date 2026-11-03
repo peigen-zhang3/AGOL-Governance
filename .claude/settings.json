@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "Team-shared Claude Code settings. Personal overrides go in settings.local.json (git-ignored). See docs/claude-guide.md.",
+  "permissions": {
+    "allow": [
+      "Bash(uv run:*)",
+      "Bash(uv sync:*)",
+      "Bash(python main.py:*)",
+      "Bash(python -m src.sampledata:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(pre-commit:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./docker/shared-postgis/.env)",
+      "Read(**/.pgpass)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(./credentials.json)",
+      "Bash(cat .env:*)",
+      "Bash(cat ./.env:*)",
+      "Bash(cat docker/shared-postgis/.env:*)",
+      "Bash(less .env:*)",
+      "Bash(head .env:*)",
+      "Bash(tail .env:*)",
+      "Bash(more .env:*)",
+      "Bash(cat ~/.pgpass:*)",
+      "Bash(cp .env:*)",
+      "Bash(mv .env:*)"
+    ],
+    "_comment_deny": "Bash deny rules are prefix-matched and best-effort — the real secret boundary is container isolation + Claude reviewing every diff (there is deliberately NO gitleaks/detect-secrets scanner; see CLAUDE.md Constraints), not this list.",
+    "disableBypassPermissionsMode": "disable"
+  },
+  "sandbox": {
+    "enabled": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"export PYTHONPATH=$PWD\" >> \"$CLAUDE_ENV_FILE\"; [ -f pyproject.toml ] && command -v uv >/dev/null 2>&1 && uv sync --frozen -q 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "{ grep -q '<PLACEHOLDER' CLAUDE.md 2>/dev/null || grep -q 'P00000' config/config.toml 2>/dev/null; } && echo 'This clone is still the UNCONFIGURED Morphum template (placeholders in CLAUDE.md and/or the template project code still in config). Unless the user is working on the template itself, offer to run the /new-project guided setup interview before other work.' || true"
+          },
+          {
+            "type": "command",
+            "command": "[ -f references/post-setup-TODO.md ] && echo 'Project setup is configured but NOT finalised: references/post-setup-TODO.md still lists template elements to prune or rewrite (unused machinery, README/CLAUDE.md). Offer to work through it; delete the file once done.' || true"
+          },
+          {
+            "type": "command",
+            "command": "[ -f references/project-brief.md ] && { echo '--- PROJECT MEMORY (references/project-brief.md — keep current via the remember skill) ---'; head -c 6000 references/project-brief.md; } || true"
+          }
+        ]
+      }
+    ]
+  }
+}

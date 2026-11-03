@@ -1,0 +1,32 @@
+# =============================================================================
+# Pre-commit hooks — hygiene only in the vanilla core. Setup (once per clone):
+#     pre-commit install        # or: uv run pre-commit install (Python starter)
+# Hooks then run on `git commit`. Run manually: pre-commit run -a
+#
+# Stack modules add their own hooks as marked blocks above the
+# `modules:insert` line (the Python starter adds ruff). Edit inside a block
+# freely: module updates merge with your changes.
+#
+# NOTE: no secret-scanning hooks (gitleaks / detect-secrets removed — flaky
+# baselines). Secret hygiene lives in the Claude rules: the CLAUDE.md
+# constraint, the .claude/settings.json deny list and .gitignore.
+# =============================================================================
+# .modules/ holds untouched copies of installed modules: never rewrite them.
+exclude: ^\.modules/
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files      # blocks accidental multi-MB rasters
+        args: ["--maxkb=5000"]
+        exclude: ^data/tracked/
+      - id: check-added-large-files      # opt-in tracked real data: its own cap
+        name: check added large files (data/tracked, 25 MB)
+        args: ["--maxkb=25000"]
+        files: ^data/tracked/
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+# modules:insert

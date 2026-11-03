@@ -1,0 +1,165 @@
+# =============================================================================
+# CI — two jobs.
+#
+# hygiene (every push/PR, seconds, no installs): plain-shell guards against
+# committing what must never be committed, plus the vanilla structure test:
+#   * secret-shaped files (.env, keys, certs) — mirrors the "Secrets /
+#     credentials" block of .gitignore; keep the two lists in lockstep.
+#   * real project data — only the opt-in data/tracked/ (with a filled-in
+#     README record) is ever tracked under data/; data/inputs|cache|outputs|
+#     library hold nothing but .gitkeep. Synthetic test data lives in
+#     tests/fixtures/ (the 10 MB cap applies).
+#     Rules: data/README.md.
+#   * oversized files — a >10 MB blob is almost always real data or an
+#     artefact that slipped past .gitignore. data/tracked/ has its own caps:
+#     25 MB per file, 250 MB in total.
+#   * the .gitignore secret rules themselves still work.
+#   * tests/test_template_structure.py (stdlib): required core files, the
+#     CLAUDE.md line cap, .gitignore rules.
+#
+# checks (only when pyproject.toml exists, i.e. a Python starter was added):
+# uv sync --frozen (cached; a stale uv.lock fails), ruff, pytest. Projects
+# inherit it. CHANGE OF DECISION in template v2.0: v1.1 took lint and tests
+# off push/PR because the template itself rebuilt the geo stack on every
+# merge; v2's core has no Python, so the job costs nothing on the template
+# and gives every Python project a real gate (see docs/CHANGELOG.md).
+# The old deep-checks.yml is gone: lint-test and reset-seam now run in the
+# playbook's module tests; the container sandbox check is sandbox.yml
+# (manual), installed with the environment/claude-container module.
+# =============================================================================
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: No secret-shaped files tracked
+        # Same patterns as the .gitignore secrets block. `git ls-files` sees
+        # only TRACKED files, so .env sitting untracked on a dev machine is
+        # fine — this fails only if one was actually committed.
+        run: |
+          bad=$(git ls-files -- '.env' '.env.*' '**/.env' '**/.env.*' \
+                              '*.key' '**/*.key' '*.pem' '**/*.pem' '*.pfx' '**/*.pfx' \
+                              'credentials.json' '**/credentials.json' \
+                              'layer_map.json' '**/layer_map.json' \
+                | grep -v -E '(^|/)\.env\.example$' || true)
+          if [ -n "$bad" ]; then
+            echo "::error::Secret-shaped files are committed — remove them from git history:"
+            echo "$bad"
+            exit 1
+          fi
+          echo "OK: no .env / key / credential files tracked."
+
+      - name: No real project data tracked (except opt-in data/tracked/)
+        # Allowed under data/: .gitkeep placeholders, data/README.md, and data/tracked/ when its
+        # README record exists and is filled in (rules: data/README.md).
+        run: |
+          bad=$(git ls-files -- 'data/**' \
+                | grep -v -E '^data/tracked/' \
+                | grep -v -E '^data/README\.md$' \
+                | grep -v -E '/\.gitkeep$' || true)
+          if [ -n "$bad" ]; then
+            echo "::error::Unexpected files tracked under data/ (real data is never committed outside data/tracked/):"
+            echo "$bad"
+            exit 1
+          fi
+          tracked=$(git ls-files -- 'data/tracked/**' | grep -v -E '/\.gitkeep$' || true)
+          if [ -n "$tracked" ]; then
+            rec=data/tracked/README.md
+            if ! git ls-files --error-unmatch "$rec" >/dev/null 2>&1; then
+              echo "::error::data/tracked/ holds files but no $rec record (see data/README.md)"; exit 1
+            fi
+            if grep -q '<client contact role' "$rec" || ! grep -q '^\*\*Agreed by:\*\*' "$rec"; then
+              echo "::error::$rec is not filled in: who agreed, privacy, decision-log entry (see data/README.md)"; exit 1
+            fi
+            echo "OK: data/tracked/ is opted in and recorded ($(echo "$tracked" | wc -l) files)."
+          fi
+          echo "OK: data/ holds only placeholders and recorded tracked data."
+
+      - name: No oversized files tracked
+        run: |
+          bad=$(git ls-files -z | xargs -0 -r du -k 2>/dev/null \
+                | awk '$2 !~ /^data\/tracked\// && $1 > 10240 {print $2 " (" $1 " KB)"}')
+          if [ -n "$bad" ]; then
+            echo "::error::Files over 10 MB are committed — data or artefacts that belong in .gitignore:"
+            echo "$bad"
+            exit 1
+          fi
+          big=$(git ls-files -z -- 'data/tracked/**' | xargs -0 -r du -k 2>/dev/null \
+                | awk '$1 > 25600 {print $2 " (" $1 " KB)"}')
+          if [ -n "$big" ]; then
+            echo "::error::data/tracked/ files over 25 MB (keep them on the box; record hashes with scripts/input_manifest.py):"
+            echo "$big"
+            exit 1
+          fi
+          total=$(git ls-files -z -- 'data/tracked/**' | xargs -0 -r du -k 2>/dev/null | awk '{s+=$1} END {print s+0}')
+          if [ "$total" -gt 256000 ]; then
+            echo "::error::data/tracked/ totals ${total} KB, over the 250 MB cap (see data/README.md)"
+            exit 1
+          fi
+          echo "OK: no tracked file exceeds 10 MB (data/tracked/: ${total} KB, files ≤ 25 MB)."
+
+      - name: .gitignore still shields secrets
+        # A stray edit to .gitignore can silently disable the .env rule; prove
+        # the ignore actually fires before anyone relies on it.
+        run: |
+          touch .env test-probe.key
+          git check-ignore -q .env       || { echo "::error::.gitignore no longer ignores .env"; exit 1; }
+          git check-ignore -q test-probe.key || { echo "::error::.gitignore no longer ignores *.key"; exit 1; }
+          rm -f .env test-probe.key
+          echo "OK: secret patterns are still ignored."
+
+      - name: Vanilla structure test (stdlib)
+        run: python3 tests/test_template_structure.py
+
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect a Python project
+        id: detect
+        run: |
+          if [ -f pyproject.toml ]; then echo "python=true" >> "$GITHUB_OUTPUT"
+          else echo "python=false" >> "$GITHUB_OUTPUT"; echo "No pyproject.toml: nothing to check."; fi
+
+      - name: Install uv
+        if: steps.detect.outputs.python == 'true'
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies (frozen — a stale lockfile fails here)
+        if: steps.detect.outputs.python == 'true'
+        run: uv sync --frozen
+
+      - name: Ruff
+        if: steps.detect.outputs.python == 'true'
+        run: uv run ruff check .
+
+      - name: Tests (offline)
+        if: steps.detect.outputs.python == 'true'
+        run: uv run pytest -q
+
+# NOTE: no gitleaks/detect-secrets content scanner — the CI+hook combo proved
+# flaky (license prompts, baseline drift) and was removed deliberately. Claude
+# IS the content scanner (CLAUDE.md constraint + .claude/settings.json deny
+# list); this workflow guards the file-level rules only. Don't re-add a
+# scanner without a plan for keeping it green.

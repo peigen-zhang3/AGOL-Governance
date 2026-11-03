@@ -1,0 +1,12 @@
+# Keep the template's automation from silently ageing between projects.
+# Python deps are deliberately NOT auto-updated here: uv.lock is refreshed
+# manually (`uv lock --upgrade` + a green CI run) so geospatial-stack bumps
+# happen deliberately, with a human watching. Dependabot's uv support only
+# landed recently — revisit adding a `uv` ecosystem block once the team wants
+# automated lockfile PRs.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

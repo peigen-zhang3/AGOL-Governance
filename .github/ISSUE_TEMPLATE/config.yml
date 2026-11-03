@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Team playbook (knowledge, standards, module library)
+    url: https://github.com/Morphum-Environmental/geospatial-playbook
+    about: Ideas, corrections and module requests for the whole team go to the playbook's issues.
+  - name: How the team works
+    url: https://github.com/Morphum-Environmental/geospatial-playbook/blob/main/plugins/morphum/skills/team-knowledge/standards/team-workflow.md
+    about: Board, review tiers, capture and harvest.

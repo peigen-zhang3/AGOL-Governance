@@ -1,0 +1,22 @@
+# LF everywhere, for every text file. Without this, a Windows clone checks out
+# CRLF and — inside the Linux dev container — git reports the whole tree as
+# modified with empty diffs, which breaks the "git is your undo
+# (git checkout -- .)" promise that resets and module updates rely
+# on. Learned the hard way on P09999.
+* text=auto eol=lf
+
+# Explicit rules kept below for documentation: shell scripts and the Docker
+# entrypoint are the files where CRLF is not just noisy but fatal. On Windows,
+# CRLF turns a shebang into `#!/bin/sh\r`, which fails with "exit 127" inside a
+# Linux container. Learned the hard way on P05729.
+*.sh    text eol=lf
+*.mmd   text eol=lf
+Dockerfile* text eol=lf
+
+# Treat committed sample geodata as binary (no line-ending munging, cleaner diffs).
+*.tif   binary
+*.tiff  binary
+*.gpkg  binary
+*.png   binary
+*.jpg   binary
+*.pdf   binary

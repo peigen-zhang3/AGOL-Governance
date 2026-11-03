@@ -1,0 +1,34 @@
+name: Task
+description: A piece of Systems & Solutions work on this project.
+labels: ["type: task"]
+body:
+  - type: input
+    id: accelo
+    attributes:
+      label: Accelo job
+      description: The P0XXXX job code this time goes to.
+      placeholder: P0XXXX
+    validations:
+      required: true
+  - type: input
+    id: project
+    attributes:
+      label: Project
+      description: Short name, or "internal".
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What and why
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How we'll know it's done (outputs, checks, who reviews).
+      placeholder: |
+        - [ ] ...
+    validations:
+      required: true
