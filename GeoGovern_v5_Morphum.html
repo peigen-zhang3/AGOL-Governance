@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Morphum | GeoGovern — ArcGIS Content Intelligence</title>
+<style>
+:root{color-scheme:dark;--bg:#0b111d;--panel:#141e2c;--panel2:#192638;--line:#2c3c51;--text:#edf3fa;--muted:#9cafc3;--accent:#59c7b9;--blue:#77adff;--amber:#f7c272;--red:#ef8e8c}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}a{color:#97c3ff}header{padding:20px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#101a29}header h1{font-size:21px;margin:0}header p{margin:2px 0 0;color:var(--muted)}.mark{display:flex;align-items:center;gap:12px}.logo{width:39px;height:39px;border-radius:12px;background:linear-gradient(135deg,#4ec5b8,#517fe1);display:grid;place-items:center;font-weight:900;color:#081421}.btn{background:#223248;color:var(--text);border:1px solid #43556d;border-radius:9px;padding:9px 14px}.btn.primary{background:#217c77;border-color:#319f96;color:white}.btn:hover:not(:disabled){filter:brightness(1.14)}.btn.slim{padding:5px 10px;font-size:12px}.btn.warn{color:#ffd3a0}main{max-width:1700px;margin:auto;padding:22px 26px}.setup{background:#17283a;border:1px solid #34506c;border-radius:14px;padding:15px 18px;margin-bottom:17px}.setup h2{font-size:15px;margin:0 0 10px}.setup p{margin:6px 0;color:var(--muted)}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.field{display:flex;flex-direction:column;gap:5px;min-width:170px}.field label{font-size:12px;color:var(--muted)}input,select{background:#0e1725;border:1px solid #41516a;border-radius:8px;padding:9px 10px;color:var(--text);min-width:0}input:focus,select:focus{outline:2px solid #398d8a}.field.wide{flex:1;min-width:210px}#account{font-size:12px;color:var(--muted)}.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}.toolbar>div{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pill{background:#273c50;border-radius:99px;padding:5px 10px;color:#c8d9e8;font-size:12px}.status{color:var(--muted);font-size:12px}.status.err{color:var(--red)}.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:14px 0 18px}.kpi{border:1px solid var(--line);background:var(--panel);padding:15px;border-radius:12px}.kpi .label{color:var(--muted);font-size:12px}.kpi .value{font-size:27px;font-weight:700;margin-top:5px}.kpi .sub{color:#8da4bc;font-size:11px}.workspace{display:grid;grid-template-columns:minmax(430px,1.15fr) minmax(440px,1fr);gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;min-width:0}.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.panel-head h2{font-size:15px;margin:0}.panel-body{padding:13px 15px}.filters{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px}.filters input,.filters select{width:100%}.table-scroll{max-height:570px;overflow:auto}table{width:100%;border-collapse:collapse;font-size:12.5px}th{text-align:left;color:#a6bbd0;font-weight:600;background:#1c2b3e;position:sticky;top:0;z-index:1}td,th{padding:10px 9px;border-bottom:1px solid #2a3a4c}tr.item-row{cursor:pointer}tr.item-row:hover{background:#233247}tr.item-row.selected{background:#214e55}.name{font-weight:600;max-width:235px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.muted{color:var(--muted)}.num{text-align:right;font-variant-numeric:tabular-nums}.tag{font-size:11px;border-radius:5px;padding:2px 6px;background:#273b4f;color:#d2e4f4;white-space:nowrap}.tag.high{color:#ffc681;background:#453427}.tag.low{color:#9fded5;background:#1a403e}.graph{width:100%;height:340px;display:block;background:radial-gradient(ellipse at center,#172d3a 0%,#111b2a 70%)}.graph text{font:11px system-ui;fill:#dce9fa;pointer-events:none}.graph .node{cursor:pointer}.graph .node circle{stroke:#d5e5f8;stroke-width:1;filter:drop-shadow(0px 3px 5px #0006)}.graph .edge{stroke:#718baa;stroke-width:1.6;opacity:.72}.graph .edge.direct{stroke:#58b9aa;stroke-width:2.4}.legend{font-size:11px;color:var(--muted);padding:8px 14px;border-top:1px solid var(--line)}.detail h3{font-size:16px;margin:2px 0}.detail p{margin:5px 0}.detail .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}.detail .meta div{background:var(--panel2);border-radius:8px;padding:9px}.detail .meta span{display:block;color:var(--muted);font-size:11px}.detail .meta strong{font-size:12px;overflow-wrap:anywhere}.dependents{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.chip{border:1px solid #436175;border-radius:7px;background:#1e3445;color:#d8e8fa;padding:5px 8px;text-align:left;font-size:11px}.help{margin:16px 0;color:var(--muted);font-size:12px}.help details{background:#121d2a;border:1px solid var(--line);border-radius:9px;padding:9px 12px}.help summary{cursor:pointer;color:#dce8f8}#file{display:none}.empty{padding:32px;text-align:center;color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}.sep{border-top:1px solid var(--line);margin:13px 0}.progress{width:160px;height:6px;background:#32465c;border-radius:9px;overflow:hidden}.progress>div{background:var(--accent);height:100%;width:0%}@media(max-width:1050px){.workspace{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){main{padding:12px}header{padding:14px}.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.field{flex:1;min-width:150px}}
+
+[hidden]{display:none!important}.header-right{display:flex;align-items:center;gap:13px}.auth-gate{min-height:calc(100vh - 82px);display:grid;place-items:center;padding:30px 16px;background:radial-gradient(ellipse at 50% 15%,#1d3c47,#0b111d 65%)}.auth-card{width:min(500px,100%);background:#152436;border:1px solid #37536a;border-radius:20px;box-shadow:0 24px 100px #0008;padding:34px}.auth-brand{font-size:12px;color:var(--accent);font-weight:800;letter-spacing:1.3px}.auth-card h2{font-size:25px;margin:12px 0}.auth-card p{color:var(--muted)}.gate-fields{display:grid;gap:14px;margin:24px 0}.gate-fields label{display:grid;gap:6px;color:#c7d6e4;font-size:12px}.gate-fields input{width:100%}.widebtn{width:100%;margin-bottom:10px;padding:12px}.gate-help{margin-top:16px;color:var(--muted);font-size:12px}.gate-help summary{cursor:pointer}.relation-view{display:grid;grid-template-columns:minmax(0,1fr) 35px minmax(0,1.15fr) 35px minmax(0,1fr);gap:7px;padding:16px;min-height:280px;align-items:start;background:#101d2b}.rel-col{min-width:0}.rel-label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:#a8bfd2;margin-bottom:9px;font-weight:700}.rel-count{color:#9ab3ca;font-weight:500}.rel-card{display:block;text-align:left;width:100%;border:1px solid #36506b;background:#1d3146;color:#f2f7fd;border-radius:9px;padding:9px;margin-bottom:7px;font-size:12px;overflow-wrap:anywhere}.rel-card:hover{border-color:#63c9bb;background:#25485a}.rel-card small{display:block;color:#a9c1d7;margin-top:3px;font-size:10px}.rel-focus{background:#1b4b50;border:2px solid #63c7b9;border-radius:12px;padding:15px 10px;text-align:center;overflow-wrap:anywhere;font-weight:700;font-size:13px}.rel-focus small{display:block;color:#b3d8d2;font-weight:400;margin-top:7px;font-size:10px}.rel-arrow{padding-top:74px;color:#6ecdbf;text-align:center;font-size:22px}.rel-muted{color:#8fa5bb;font-size:12px;font-style:italic}.rel-more{font-size:11px;color:#b0c8d9;margin-top:5px}.detail-section{margin-top:14px}.meta-rich{display:grid;grid-template-columns:1fr 1fr;gap:8px}.meta-rich>div{background:#1c2c3e;border-radius:8px;padding:10px;overflow-wrap:anywhere}.meta-rich label{display:block;font-size:11px;color:#a5bad0}.meta-rich strong{font-size:12px}.description{white-space:pre-wrap;max-height:180px;overflow:auto;color:#d2dfeb;font-size:12px}.credit-note{background:#1c2b3a;border-left:3px solid #e3ba76;padding:10px;font-size:12px;color:#ccdbeb}.detail-tabset{display:flex;gap:7px;border-bottom:1px solid var(--line);margin:12px 0}.detail-tabset button{border:0;background:none;padding:8px 11px;color:#b0c1d4;border-bottom:2px solid transparent}.detail-tabset button.active{border-color:#58c8b8;color:#f4fafa}.metadata-link{font-size:11px} @media(max-width:700px){.relation-view{grid-template-columns:1fr;}.rel-arrow{padding:0;transform:rotate(90deg)}.auth-card{padding:23px}}
+/* Morphum product identity: text-based mark, no external logo assets */
+:root{--bg:#0b1719;--panel:#142326;--panel2:#1a2d30;--line:#2d4749;--accent:#6bd2ba;--blue:#93bcca}
+body{background:radial-gradient(ellipse at 70% -15%,#1b3432 0,transparent 45%),var(--bg)}
+header{background:#102123;border-bottom-color:#32514e;padding:18px 28px}
+.logo{width:43px;height:43px;border-radius:10px;background:#79d7bb;color:#10342e;font-size:25px;font-weight:900;letter-spacing:-2px;box-shadow:0 0 0 3px #79d7bb1f}
+header h1{font-size:22px;letter-spacing:-.5px}.product-by{font-size:12px;font-weight:600;color:#9dbdb5;letter-spacing:.2px;margin-left:7px}
+.auth-gate{background:radial-gradient(ellipse at 50% 10%,#1c443c 0,#0b1719 65%)}
+.auth-card{background:#152a2b;border-color:#3b615a;box-shadow:0 30px 100px #0009}
+.auth-brand{color:#8fddc4;letter-spacing:2px}.auth-card h2{font-size:30px;letter-spacing:-.7px}
+.brand-foot{font-size:11px;color:#86a99e;border-top:1px solid #35514b;padding-top:17px;margin-top:19px;text-align:center;letter-spacing:.3px}
+.btn.primary{background:#267b68;border-color:#4aab92}.btn.primary:hover{background:#318f7a}
+::selection{background:#317c6b;color:white}
+
+/* GeoGovern v3: bulk governance workspace and data source classification */
+.source-pill{display:inline-block;font-size:10px;line-height:1.3;font-weight:700;padding:3px 6px;border-radius:5px;margin-top:4px;border:1px solid #4d6a6a;background:#25413d;color:#b8e9db}
+.source-pill.feed{background:#4b3543;border-color:#94627e;color:#ffd5e6}.source-pill.external{background:#3c3a27;border-color:#998558;color:#f7e4a7}.source-pill.view{background:#263b56;border-color:#547dac;color:#c3dafa}.source-pill.unknown{background:#273238;border-color:#4f666e;color:#bed0d5}
+.filters{grid-template-columns:1.3fr .9fr .9fr .9fr .9fr}.row-check{width:17px;height:17px;min-width:17px;accent-color:var(--accent);vertical-align:middle}.selection-toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#182e2d;border:1px solid #386359;padding:10px 12px;margin:12px 0;border-radius:11px}.selection-toolbar strong{color:#aee8d2}.selection-toolbar .btn{font-size:12px}.admin-panel{margin-top:18px;background:#142326;border:1px solid #436a5e;border-radius:14px;overflow:hidden}.admin-head{padding:17px 19px;display:flex;gap:16px;align-items:center;justify-content:space-between;border-bottom:1px solid #365249}.admin-head h2{font-size:17px;margin:0}.admin-head p{font-size:12px;margin:4px 0 0;color:var(--muted)}.admin-head .pill{background:#284a40}.admin-body{padding:17px 19px}.admin-body-grid{display:grid;grid-template-columns:minmax(260px,1fr) minmax(320px,1.35fr);gap:20px}.admin-form{display:grid;gap:11px}.admin-form .field{min-width:0}.admin-form input,.admin-form select,.admin-form textarea{width:100%}textarea{font:inherit;resize:vertical;background:#0e1725;color:var(--text);border:1px solid #41516a;border-radius:8px;padding:9px;min-height:85px}.admin-note{font-size:12px;line-height:1.55;color:#b9c9d4}.admin-note.warning{border-left:3px solid var(--amber);background:#322d25;padding:10px;color:#f6d9ac}.admin-preview{background:#0d1a1c;border:1px solid #385750;border-radius:10px;max-height:320px;overflow:auto;padding:11px;white-space:pre-wrap;font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:#cbe7d8}.admin-results{max-height:210px;overflow:auto;font-size:12px;margin-top:9px}.admin-results div{padding:5px 0;border-bottom:1px solid var(--line)}.admin-results .ok{color:#9ee3be}.admin-results .error{color:#f5abab}.confirm-wrap{background:#19312e;padding:12px;border-radius:10px;border:1px solid #4b7e6b;display:grid;gap:8px}.confirm-wrap input[type=checkbox]{accent-color:var(--accent);width:18px;height:18px}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin-actions button{flex:1}.impact-stat{border:1px solid #415c59;padding:10px 12px;background:#1e3331;border-radius:10px}.impact-stat strong{color:#b1e8d3}.mode-pill{border:1px solid #547669;padding:4px 10px;font-size:12px;border-radius:99px;color:#c5e5d5}.mode-pill.on{background:#256a5c;color:white}.hidden-conditional[hidden]{display:none!important}.table-scroll{max-height:650px}th.check-col,td.check-col{width:36px;min-width:36px;padding:10px 6px;text-align:center}.meta-source{font-size:12px;color:#c8e0d6;overflow-wrap:anywhere}.source-legend{padding:8px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)}
+@media(max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.admin-body-grid{grid-template-columns:1fr}}@media(max-width:650px){.filters{grid-template-columns:1fr}}
+
+/* GeoGovern v4 — archival impact analysis; no delete actions */
+.archive-panel{margin:16px 0 20px;background:var(--panel);border:1px solid #436659;border-radius:14px;overflow:hidden}
+.archive-head{padding:17px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.archive-head h2{font-size:17px;margin:0}.archive-head p{color:var(--muted);font-size:12px;margin:3px 0 0;max-width:850px}
+.archive-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:14px 16px}
+.archive-stat{border:1px solid #3a5150;background:#142f2e;border-radius:10px;padding:12px}
+.archive-stat span{font-size:11px;color:#a8c4bf;display:block}.archive-stat strong{font-size:24px;display:block;line-height:1.3;margin-top:3px}
+.archive-stat.danger{border-color:#764e50;background:#35282a}.archive-stat.danger strong{color:#ffb6a5}
+.archive-toolbar{padding:0 16px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.archive-toolbar input{flex:1;min-width:180px}.archive-toolbar select{min-width:210px}
+.archive-table-wrap{max-height:340px;overflow:auto}.archive-table td,.archive-table th{padding:10px 12px}.archive-table td{vertical-align:middle}
+.archive-table .a-title{font-weight:700;font-size:12px}.archive-table .a-sub{font-size:11px;color:var(--muted)}
+.archive-table tbody tr{cursor:pointer}.archive-table tbody tr:hover{background:#233c3a}
+.archive-chip{font-size:10px;display:inline-block;font-weight:750;padding:3px 7px;border-radius:6px;white-space:nowrap}
+.archive-chip.conflict{background:#583032;color:#ffd0c0;border:1px solid #905759}
+.archive-chip.depchain{background:#493d2b;color:#ffe3b4;border:1px solid #8b714b}
+.archive-chip.unlinked{background:#264443;color:#abdfd5;border:1px solid #476c67}
+.archive-chip.affected{background:#393653;color:#d0c9ff;border:1px solid #69608e}
+.archive-chip.normal{background:#24343f;color:#bbd0da;border:1px solid #47566a}
+.archive-callout{margin:12px 16px 16px;padding:10px 13px;background:#2c2d29;border-left:3px solid #e5bb79;border-radius:7px;font-size:12px;color:#e4d6b9}
+.archive-risk-note{padding:12px 13px;background:#34302b;border:1px solid #795b40;border-radius:9px;margin:10px 0;font-size:12px}
+.archive-path{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:9px;background:#132d2d;border:1px solid #34564f;border-radius:9px;margin:7px 0}
+.archive-path button{background:#24423f;border:1px solid #4b776e;border-radius:6px;padding:6px 9px;color:#ebfff8;text-align:left;font-size:11px;max-width:215px}
+.archive-path button:hover{background:#34655b}.archive-path .path-arrow{color:#9adac9}
+.archive-line{font-size:12px;color:#b7d2c9;margin:8px 0}.archive-badge-inline{display:inline-block;color:#ffbfb5;font-size:10px;font-weight:bold;margin-left:4px}
+.filters{grid-template-columns:2fr repeat(3,minmax(140px,1fr))}.filters .second-line{grid-column:auto}
+@media(max-width:900px){.archive-stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(2,minmax(140px,1fr))}}
+@media(max-width:550px){.archive-stats{grid-template-columns:1fr}.filters{grid-template-columns:1fr}}
+
+/* GeoGovern v5 | Soft-dark interface optimised for dim workspaces */
+:root{color-scheme:dark;--bg:#151d20;--panel:#1d282a;--panel2:#253134;--line:#37494a;--text:#dce5df;--muted:#a8b6af;--accent:#8ac2a9;--blue:#a3bfd1;--amber:#dcbf8e;--red:#dda2a0}
+body{background:var(--bg);color:var(--text);line-height:1.55}
+header{background:#1a2426;border-bottom-color:var(--line);box-shadow:none}
+.logo{background:#90bfa9;color:#1b312b;box-shadow:none}
+header p,.product-by{color:var(--muted)}
+a{color:#b3d0d9}
+.btn,.chip,.rel-card,.rel-focus,input,select,button{transition:background-color .12s ease,border-color .12s ease,color .12s ease}
+.btn.primary{background:#356d5c;border-color:#5c907b;color:#f1f8f3}
+.btn.primary:hover{background:#417e69}
+.auth-gate{background:radial-gradient(ellipse at 45% 0%,#263b38 0%,#151d20 60%)}
+.auth-card{background:#202d2e;border:1px solid #445956;box-shadow:0 18px 70px #0005}
+.auth-brand{color:#b5d6bf}
+.brand-foot{border-top-color:var(--line);color:#aabcb1}
+.archive-panel,.admin-panel,.panel,.kpi,.archive-stat,.archive-stat.danger{box-shadow:none}
+.archive-panel{border-color:#52665f;background:var(--panel)}
+.archive-stat{border-color:#3c5550;background:#243632}
+.archive-stat.danger{border-color:#725858;background:#382d30}
+.archive-stat.danger strong{color:#f0bfaf}
+.archive-chip.conflict{background:#51383a;border-color:#7f575a;color:#f2cdbe}
+.archive-chip.depchain{background:#4b4438;border-color:#73644a;color:#e3cfa4}
+.archive-chip.unlinked{background:#2e4541;border-color:#527469;color:#c6e2d5}
+.archive-chip.affected{background:#383b4c;border-color:#5a667d;color:#d1d5eb}
+.archive-chip.normal{background:#29393e;border-color:#486166;color:#c7d8d8}
+.archive-callout,.archive-risk-note{background:#39372e;color:#e2d7bd;border-color:#7d7252}
+.archive-path{background:#223433;border-color:#45665e}
+.archive-path button{background:#2c4842;border-color:#567f72;color:#e3f2e8}
+.archive-path button:hover{background:#395a50}
+.selection-toolbar{background:#233732;border-color:#45685d}
+.selection-toolbar strong{color:#c0e3d0}
+.source-pill{background:#30453f;color:#d2e8db;border-color:#527468}
+.source-pill.feed{background:#46343c;border-color:#735864;color:#ead0d8}
+.source-pill.external{background:#464336;border-color:#82765a;color:#ebe0b9}
+.source-pill.view{background:#2d414f;border-color:#527186;color:#d0e4ee}
+.source-pill.unknown{background:#313c40;border-color:#53686b;color:#c7d5d6}
+.archive-table tbody tr:hover{background:#2a3c3a}
+.relation-view{background:transparent}
+:focus-visible{outline:2px solid #accbbb;outline-offset:2px}
+body.theme-contrast{--bg:#10191a;--panel:#192b2b;--panel2:#213333;--line:#507067;--text:#f0f6f2;--muted:#c0d3c8;--accent:#a3e3c5;--blue:#bcdfff;--amber:#efd2a1;--red:#ffc1b7}
+.theme-btn{white-space:nowrap}
+.auth-busy{display:flex;align-items:center;gap:12px;background:#293a37;border:1px solid #506b60;border-radius:12px;margin:19px 0;padding:13px 14px;color:#d0ded4;font-size:13px}
+.auth-spinner{width:17px;height:17px;border-radius:50%;border:2px solid #4c675a;border-top-color:#b2dac4;animation:spin .9s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.auth-recovery{padding-top:10px;border-top:1px solid var(--line);margin-top:16px}
+.auth-recovery p{font-size:12px;color:var(--muted)}
+.auth-recovery details{margin:11px 0;background:#253332;border:1px solid var(--line);border-radius:10px;padding:11px}
+.auth-recovery summary{cursor:pointer;font-weight:600;color:#c9dcd0}
+.auth-recovery .gate-fields{margin-top:12px}
+.credit-panel{margin:16px 0 20px;border:1px solid #49655d;background:var(--panel);border-radius:14px;overflow:hidden}
+.credit-panel .credit-head{padding:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.credit-panel .credit-head h2{margin:0;font-size:17px}
+.credit-panel .credit-head p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.credit-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:15px}
+.credit-card{background:#263633;border:1px solid #3f5c53;border-radius:11px;padding:13px;min-width:0}
+.credit-card span{display:block;font-size:11px;color:#aabfb6}
+.credit-card strong{display:block;font-size:23px;color:#dbede1;margin-top:6px;line-height:1.3;word-break:break-word}
+.credit-card strong.accent{color:#b4e2c8}
+.credit-card small{display:block;color:#9eb3a8;font-size:10px;margin-top:6px}
+.credit-section{display:grid;grid-template-columns:1.15fr 1fr;gap:15px;padding:0 15px 15px}
+.credit-subpanel{background:#202f2e;border:1px solid #38534d;border-radius:10px;padding:14px;min-width:0}
+.credit-subpanel h3{margin:0 0 9px;font-size:13px}
+.credit-subpanel p{font-size:11px;color:var(--muted);margin:8px 0}
+.credit-bar-row{display:grid;grid-template-columns: minmax(100px,1fr) 1.15fr 84px;align-items:center;gap:9px;margin:8px 0;font-size:11px}
+.credit-bar-row button{background:none;border:0;text-align:left;color:#cadbd2;padding:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;cursor:pointer}
+.credit-track{height:7px;background:#364846;border-radius:99px;overflow:hidden}
+.credit-fill{height:100%;background:#7aaf98;border-radius:99px}
+.credit-value{text-align:right;font-variant-numeric:tabular-nums;color:#bfd8c8}
+.credit-note-box{padding:11px 15px 15px;font-size:11px;color:#aebdb3;border-top:1px solid #314844;line-height:1.6}
+.credit-note-box strong{color:#d5e2d9}
+.credit-scope-pill{font-size:11px;color:#bbddc9;border:1px solid #517a6a;border-radius:99px;padding:5px 10px;white-space:nowrap}
+.credit-mini-table{width:100%;font-size:11px;border-collapse:collapse;margin-top:8px}
+.credit-mini-table td{padding:7px 0;border-bottom:1px solid #3b514a}
+.credit-mini-table td:last-child{text-align:right;color:#dae7dd;font-variant-numeric:tabular-nums}
+.credit-empty{color:var(--muted);font-size:12px;padding:11px 0}
+@media(max-width:1100px){.credit-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.credit-section{grid-template-columns:1fr}}
+@media(max-width:520px){.credit-cards{grid-template-columns:1fr}.credit-bar-row{grid-template-columns:1fr 1fr 72px}}
+@media(prefers-reduced-motion:reduce){.auth-spinner{animation:none}}
+</style>
+<script src="https://js.arcgis.com/4.34/"></script>
+</head><body><header><div class="mark"><div class="logo">M</div><div><h1>GeoGovern <span class="product-by">by Morphum</span></h1><p>ArcGIS Content Intelligence · Dependencies · Archival Safety · Bulk Governance</p></div></div><div class="header-right"><div id="account">Not connected · Review & manage</div><button class="btn slim theme-btn" id="themeBtn" title="Toggle contrast">◐ Contrast</button><button class="btn slim" id="settingsBtn" title="Connection settings">⚙ Connection</button></div></header>
+<div id="authGate" class="auth-gate"><div class="auth-card" aria-label="GeoGovern authentication">
+  <div class="auth-brand">MORPHUM / GEOSPATIAL SERVICES</div>
+  <h2>GeoGovern</h2><p>ArcGIS Content Intelligence</p>
+  <div class="auth-busy" id="authBusy" role="status"><span class="auth-spinner" aria-hidden="true"></span><span id="authBusyText">Checking your ArcGIS Online session…</span></div>
+  <div class="auth-recovery" id="authRecovery" hidden>
+    <p id="gateNote">Access your content using your organisation's ArcGIS sign-in. No ArcGIS password is entered here.</p>
+    <div id="gateError" class="tiny" role="alert"></div>
+    <button id="gateLogin" class="btn primary widebtn">Sign in to ArcGIS</button>
+    <button id="gateDemo" class="btn widebtn">Explore sample data</button>
+    <details id="connectionSetup"><summary>Connection settings · Advanced</summary>
+      <div class="gate-fields"><label>Portal URL<input id="gatePortal" value="https://aucklandcouncil.maps.arcgis.com" spellcheck="false"></label>
+      <label>OAuth Client ID<input id="gateClient" placeholder="Public ArcGIS OAuth Client ID" autocomplete="off" spellcheck="false"></label></div>
+      <p>Only the public Client ID is saved locally. Authentication tokens are managed by the ArcGIS SDK.</p>
+    </details>
+  </div><div class="brand-foot">GeoGovern · A Morphum geospatial tool · Changes require explicit confirmation</div>
+</div></div>
+<main id="appShell" hidden><section class="setup" hidden><h2>Connect to ArcGIS Online</h2><div class="controls"><div class="field wide"><label for="portal">Portal URL</label><input id="portal" value="https://www.arcgis.com" spellcheck="false"></div><div class="field wide"><label for="appId">OAuth Application Client ID</label><input id="appId" placeholder="Paste registered ArcGIS OAuth Client ID" autocomplete="off" spellcheck="false"></div><button class="btn primary" id="login">Sign in with ArcGIS</button><button class="btn" id="demo">Explore demo</button></div><p>Host this HTML on HTTPS (for example GitHub Pages or your organisation's web hosting) and register that page's exact URL as an ArcGIS OAuth redirect URI. Sign-in uses Esri's OAuth flow; the dashboard does not ask for your password or store your access token.</p></section>
+<div class="toolbar"><div><button class="btn" id="mine" disabled>My content</button><button class="btn" id="org" disabled>Organisation content</button><button class="btn" id="refresh" disabled>Refresh live</button><span class="pill" id="scope">Demo dataset</span></div><div><span class="status" id="status" role="status">Choose a demo or connect to your account.</span><div class="progress" id="progress" hidden><div id="bar"></div></div><button class="btn slim" id="stop" hidden>Stop scan</button></div></div>
+<div class="kpis"><div class="kpi"><div class="label">Items loaded</div><div class="value" id="k-items">0</div><div class="sub">Within current scope</div></div><div class="kpi"><div class="label">Layers</div><div class="value" id="k-layers">0</div><div class="sub">Feature / tile / imagery</div></div><div class="kpi"><div class="label">Detected links</div><div class="value" id="k-edges">0</div><div class="sub">Direct, item-to-item</div></div><div class="kpi"><div class="label">No detected users</div><div class="value" id="k-orphans">0</div><div class="sub">Not proof of unused</div></div><div class="kpi"><div class="label">Highest dependency</div><div class="value" id="k-max">0</div><div class="sub">Direct references</div></div></div>
+
+<section class="credit-panel" id="creditPanel" aria-label="Estimated AGOL storage credit usage">
+ <div class="credit-head"><div><h2>Storage & credit planning <span class="tag">Indicative estimate</span></h2><p>Storage estimates from ArcGIS item metadata. Compare with the organisation's official credit report before approving deletion.</p></div><span class="credit-scope-pill" id="creditScope">Current loaded inventory</span></div>
+ <div class="credit-cards">
+  <div class="credit-card"><span>Estimated credits / month</span><strong id="creditMonthly">—</strong><small>Known-size supported items only</small></div>
+  <div class="credit-card"><span>Annual equivalent</span><strong id="creditAnnual">—</strong><small>Constant storage for 12 months</small></div>
+  <div class="credit-card"><span>Selected candidates / month</span><strong id="creditSelected" class="accent">—</strong><small>Illustrative, not approved savings</small></div>
+  <div class="credit-card"><span>Estimation coverage</span><strong id="creditCoverage">—</strong><small id="creditMissing">Unknown storage items excluded</small></div>
+ </div>
+ <div class="credit-section"><div class="credit-subpanel"><h3>Largest estimated storage contributors</h3><div id="creditTop"><div class="credit-empty">Load or import an inventory to see estimates.</div></div></div><div class="credit-subpanel"><h3>Assumptions & breakdown</h3><table class="credit-mini-table"><tbody>
+ <tr><td>Feature storage proxy</td><td id="creditFeature">—</td></tr><tr><td>File storage proxy</td><td id="creditFile">—</td></tr><tr><td>Estimated candidate annual equivalent</td><td id="creditCandidateAnnual">—</td></tr>
+ <tr><td>Selected candidates with measurable estimates</td><td id="creditCandidateCount">—</td></tr>
+ </tbody></table><p>The selected-candidate total only considers checked items in the content library. It does not mean they are safe to delete.</p><button class="btn slim" id="creditExport">Export credit estimates CSV</button> <a href="https://doc.arcgis.com/en/arcgis-online/administer/credits.htm" target="_blank" rel="noopener noreferrer">Esri storage rates ↗</a></div></div>
+ <div class="credit-note-box"><strong>Calculation:</strong> Hosted features: 2.4 credits per 10 MB/month; other stored files: 1.2 per GB/month. These are hourly-billed rates presented as monthly equivalents. <strong>Limitations:</strong> <code>item.size</code> can differ from billed data size; feature attachments, sync replicas, hosted views, imagery, notebook workspaces and external feeds may not be captured accurately. Zero detected dependencies is not deletion clearance. <strong>Verify:</strong> ArcGIS Online → Organisation → Status → Storage → Feature → Database.</div>
+</section>
+<section class="archive-panel" id="archivePanel" aria-label="Archival safety review">
+ <div class="archive-head"><div><h2>Archive safety review <span class="tag">Read-only analysis</span></h2><p>Find deprecated sources still feeding content not marked deprecated. Trace direct and multi-step dependencies before changing sharing, archiving or deleting anything.</p></div><button class="btn slim" id="archiveExport">Export impact register CSV</button></div>
+ <div class="archive-stats">
+  <div class="archive-stat"><span>Items marked deprecated</span><strong id="archDeprecated">0</strong></div>
+  <div class="archive-stat danger"><span>Deprecated items with non-deprecated consumers</span><strong id="archConflicts">0</strong></div>
+  <div class="archive-stat"><span>Non-deprecated items potentially affected</span><strong id="archAffected">0</strong></div>
+  <div class="archive-stat"><span>Deprecated · no detected consumers</span><strong id="archUnlinked">0</strong></div>
+ </div>
+ <div class="archive-toolbar">
+  <select id="archiveFilter" aria-label="Filter archive findings"><option value="all">All deprecated items</option><option value="conflict">Deprecated → not-deprecated (review first)</option><option value="depchain">Used only by deprecated items</option><option value="unlinked">No detected downstream items</option><option value="affected">Non-deprecated items using deprecated sources</option></select>
+  <input type="search" id="archiveSearch" placeholder="Search archive findings by item or owner…" aria-label="Search archive findings"/>
+  <span class="tiny" id="archiveCount">0 results</span>
+ </div>
+ <div class="archive-table-wrap"><table class="archive-table"><thead><tr><th>Item / owner</th><th>AGOL status</th><th id="archiveDirectHeading">Direct not-deprecated consumers</th><th id="archiveDownHeading">All not-deprecated downstream</th><th>Assessment</th></tr></thead><tbody id="archiveRows"></tbody></table></div>
+ <p class="archive-callout" id="archiveCoverage">Dependency coverage is limited to loaded and accessible item definitions. Zero detected references is NOT approval to delete. Review ArcGIS Used by, layer views, FME jobs, REST consumers and sharing before removal.</p>
+</section>
+<div class="workspace"><section class="panel"><div class="panel-head"><h2>Content library</h2><div><button class="btn slim" id="csv">Export CSV</button> <button class="btn slim" id="json">Export JSON</button> <button class="btn slim" id="importBtn">Import snapshot</button><input id="file" type="file" accept=".json,application/json"></div></div><div class="panel-body"><div class="filters"><input id="search" placeholder="Search title, ID, owner…" aria-label="Search items"><select id="type"><option value="">All item types</option></select><select id="folder"><option value="">All folders</option></select><select id="source"><option value="">All source types</option></select><select id="statusFilter" aria-label="Filter by AGOL status"><option value="">All content statuses</option><option value="deprecated">Deprecated</option><option value="notdeprecated">Not deprecated</option><option value="authoritative">Authoritative</option></select><select id="riskFilter" aria-label="Filter by archive risk"><option value="">All archive findings</option><option value="conflict">Deprecated with non-deprecated consumers</option><option value="affected">Not-deprecated item relying on deprecated</option><option value="depchain">Deprecated, only deprecated downstream</option><option value="unlinked">Deprecated, no consumers detected</option></select><select id="sort"><option value="direct">Most referenced</option><option value="downstream">Most downstream</option><option value="title">Title A–Z</option><option value="modified">Recently modified</option><option value="credit">Highest estimated storage credits</option></select></div><div class="selection-toolbar"><div><strong id="selectedCount">0 selected</strong><span class="tiny"> · check individual rows or select displayed items</span></div><div><button class="btn slim" id="selectFiltered">Select first 100 filtered</button> <button class="btn slim" id="clearSelected">Clear selection</button> <button class="btn slim primary" id="openBulk">Bulk management ↓</button></div></div><div class="tiny" id="count">0 results</div></div><div class="table-scroll"><table><thead><tr><th class="check-col"><input type="checkbox" class="row-check" id="checkVisible" aria-label="Select visible filtered items" title="Select displayed items"></th><th>Item</th><th>Type / source / owner / folder</th><th class="num">Direct</th><th class="num">All ↓</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section class="panel"><div class="panel-head"><h2>Relationship explorer</h2><span class="tiny">Select a row or graph node</span></div><div id="graph" class="relation-view" aria-label="Directional dependency relationships"></div><div class="source-legend">Data classification uses ArcGIS item type and type keywords. Referenced services are not necessarily real-time feeds; only Feed and Stream Service items are labelled as feeds.</div><div class="legend"><strong>Direction:</strong> <span style="color:#77adff">Uses these →</span> Selected item <span style="color:#59c7b9">→ Used by these</span>. Click any card to navigate. Indirect consumers are listed below.</div><div class="panel-body detail" id="detail"><div class="empty">Select an item to inspect its dependencies.</div></div></section></div>
+
+<section class="admin-panel" id="adminPanel"><div class="admin-head"><div><h2>Bulk content management</h2><p>Choose items in the Content library, preview changes, and explicitly confirm before writing to ArcGIS Online.</p></div><span class="mode-pill" id="adminMode">Read-only until signed in</span></div><div class="admin-body"><div class="admin-body-grid"><div class="admin-form"><div class="field"><label for="bulkAction">Bulk action</label><select id="bulkAction"><option value="move">Move selected items to folder</option><option value="tags">Edit tags</option><option value="snippet">Set summary</option><option value="description">Set description</option><option value="title">Add prefix/suffix to title</option><option value="deprecated">Mark as Deprecated</option><option value="clearstatus">Clear content status (remove badge)</option><option value="protect">Enable delete protection</option><option value="unprotect">Disable delete protection</option></select></div><div class="field hidden-conditional" id="bulkFolderWrap"><label for="bulkFolder">Destination folder (your own account)</label><select id="bulkFolder"><option value="/">Root folder</option></select><span class="tiny">Moving a layer does not change its item ID or service URL. Only your own items are supported.</span></div><div class="field hidden-conditional" hidden id="bulkTagWrap"><label for="bulkTagMode">Tag action</label><select id="bulkTagMode"><option value="append">Append tags (preserve existing)</option><option value="remove">Remove matching tags</option><option value="replace">Replace all tags</option></select><label for="bulkTags">Comma-separated tags</label><input id="bulkTags" placeholder="e.g. Safe Networks, Archived"/></div><div class="field hidden-conditional" hidden id="bulkTextWrap"><label id="bulkTextLabel" for="bulkText">Text to apply</label><textarea id="bulkText" placeholder="Enter new text"></textarea><span class="tiny" id="bulkTextHelp">Applied to every selected item.</span></div><div class="field hidden-conditional" hidden id="bulkTitleWrap"><label for="bulkTitleMode">Title change</label><select id="bulkTitleMode"><option value="prefix">Prefix</option><option value="suffix">Suffix</option></select><input id="bulkTitleText" placeholder="e.g. ARCHIVE - "/></div><div class="admin-actions"><button class="btn primary" id="previewBulk">Preview changes</button><button class="btn" id="exportAudit" disabled>Export result log</button></div><div class="admin-note warning">No writes occur until you preview, acknowledge the impact and type the confirmation phrase. This release excludes deletion, unsharing and owner transfers.</div></div><div><div class="impact-stat" id="bulkImpact"><strong>No pending changes</strong><div class="tiny">Select some owned items and click Preview changes.</div></div><h3 style="font-size:13px;margin:13px 0 6px">Change preview</h3><div class="admin-preview" id="bulkPreview">Nothing queued.</div><div class="confirm-wrap" id="bulkConfirm" hidden><label style="display:flex;align-items:center;gap:9px"><input id="bulkAcknowledged" type="checkbox">I have reviewed the item list and dependency impact.</label><label class="tiny" for="bulkPhrase">Type APPLY to authorise these changes</label><input id="bulkPhrase" autocomplete="off" placeholder="APPLY"/><button class="btn primary" id="bulkApply" disabled>Apply changes to ArcGIS Online</button></div><h3 style="font-size:13px;margin:13px 0 6px">Operation results</h3><div class="admin-results" id="bulkResults"><span class="tiny">No operations run in this session.</span></div></div></div></div></section>
+<div class="help"><details><summary>How the scan works, limitations, and secure deployment</summary><p>Searches accessible ArcGIS portal items, then reads JSON definitions for web maps, web scenes, applications, dashboards and other JSON-backed items. It detects references by 32-character ArcGIS item IDs and matches service URLs to loaded layers. Counts are calculated only across the loaded inventory. A partial scan can undercount. REST access permissions limit results; organisation searches are not equivalent to all content unless your role permits access. Some app configurations, external REST URLs, FME integrations, embedded content and runtime-generated references cannot be fully detected. Direct links and transitive downstream links are shown separately; loops are handled.</p><p>For live use, host the HTML at an HTTPS URL and register the URL in an ArcGIS OAuth application. The application uses the ArcGIS Maps SDK IdentityManager (OAuth 2.0) and fetches JSON through the portal sharing REST API; only explicitly confirmed management operations write to ArcGIS item metadata, status, protection or folder. No layer data edits are made. Client ID is not secret; do not embed client secrets. Only use on a trusted host. Browser privacy extensions, cross-origin policies, or organisation security policies may affect sign-in or certain item reads. CSV/JSON downloads and imports remain local to your browser; management actions require a live sign-in and items you own.</p><p>For large organisations, the search API is capped at 10,000 items per search. Split very large inventories by owner/date or run a backend Python audit. This standalone viewer limits live downloads to 10,000 and concurrent definition reads to four. Review no-reference candidates manually before archiving.</p></details></div></main>
+<script>
+(()=>{'use strict';
+const metadataCache=new Map(), folderNames=new Map(), bulkSelected=new Set();
+let bulkPlan=null, bulkRunning=false, bulkAudit=[];
+const $=id=>document.getElementById(id), state={items:[],edges:[],selected:null,scope:'demo',portal:'https://aucklandcouncil.maps.arcgis.com',user:null,orgid:null,credential:null,oauth:null,stopped:false,loading:false,partial:false};
+const DATA_TYPES=/Web Map|Web Scene|Dashboard|Web Mapping Application|Application|StoryMap|Story Map|Hub|QuickCapture|Experience|Form|Workforce|Insights|Notebook/i;
+const LAYER_TYPES=/Feature Service|Feature Layer|Map Service|Map Image Layer|Image Service|Imagery Layer|Tile Service|Vector Tile Service|Scene Service|WMS|WMTS|Stream Service|Knowledge Graph|GeoJSON/i;
+const colors={layer:'#63bdc7',map:'#77adff',app:'#f7c272',other:'#a68cec'};
+const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isId=x=>typeof x==='string' && /^[0-9a-f]{32}$/i.test(x);
+const normalizeUrl=x=>String(x||'').trim().replace(/\?.*$/,'').replace(/\/$/,'').toLowerCase();
+const setStatus=(s,error=false)=>{$('status').textContent=s;$('status').className='status'+(error?' err':'')};
+function kind(item){const t=item.type||'';return LAYER_TYPES.test(t)?'layer':/Web Map|Web Scene/i.test(t)?'map':DATA_TYPES.test(t)?'app':'other'}
+function sourceType(i){
+ const type=String(i.type||''), kws=(i.typeKeywords||[]).map(k=>String(k).toLowerCase()), url=String(i.url||'').toLowerCase();
+ if(type==='Feed'||/Stream Service|Stream Layer/i.test(type))return {key:'feed',name:'Feed / stream service',why:'ArcGIS Feed or Stream Service item'};
+ if(!LAYER_TYPES.test(type))return {key:'notlayer',name:'Not a layer',why:'Other ArcGIS item type'};
+ if(kws.some(k=>k.includes('view service')))return {key:'view',name:'Hosted layer view',why:'View Service keyword'};
+ if(kws.some(k=>k.includes('hosted service')))return {key:'hosted',name:'AGOL-hosted layer',why:'Hosted Service keyword'};
+ if(/featureserver|mapserver|imageserver/i.test(url)||/Feature Service|Map Service|Image Service|WMS|WMTS/i.test(type))return {key:'external',name:'Referenced / unconfirmed',why:'No Hosted Service keyword; may be Enterprise/other AGOL service'};
+ return {key:'unknown',name:'Other / unconfirmed',why:'Insufficient metadata to determine source'};
+}
+const formatSize=x=>typeof x==='number'&&x>=0?(x===0?'0 B':x<1024?x+' B':x<1048576?(x/1024).toFixed(1)+' KB':x<1073741824?(x/1048576).toFixed(2)+' MB':(x/1073741824).toFixed(2)+' GB'):'Not reported';
+function creditEstimate(i){
+ const type=String(i.type||''),src=sourceType(i),kw=(i.typeKeywords||[]).map(x=>String(x).toLowerCase());
+ if(src.key==='feed')return {amount:null,category:'excluded',reason:'Feeds / streams may be billed separately; item size is not a defensible usage proxy'};
+ if(src.key==='view')return {amount:0,category:'view',reason:'Hosted feature views do not incur separate feature storage (other associated storage may still apply)'};
+ if(src.key==='external')return {amount:null,category:'excluded',reason:'Unconfirmed or referenced service: no attributable hosted storage estimate for this item'};
+ if(/Image Service|Imagery Layer/i.test(type))return {amount:null,category:'excluded',reason:'Imagery charging can include per-image amounts; use the official report'};
+ if(/Notebook/i.test(type))return {amount:null,category:'excluded',reason:'Notebook workspace storage can use a different rate'};
+ if(/Feature Service|Feature Layer/i.test(type)){
+   if(src.key!=='hosted')return {amount:null,category:'excluded',reason:'Feature hosting not confirmed by Hosted Service keyword'};
+   if(!Number.isFinite(i.size)||i.size<=0)return {amount:null,category:'feature',reason:'Hosted feature data size is missing or zero; cannot infer billed size'};
+   return {amount:i.size/1e7*2.4,category:'feature',reason:'Proxy from reported item size: 2.4 credits / 10 MB of feature storage / month'};
+ }
+ if(!Number.isFinite(i.size)||i.size<=0)return {amount:null,category:'file',reason:'Item size not available or zero; file-storage cost cannot be estimated'};
+ return {amount:i.size/1e9*1.2,category:'file',reason:'Proxy from reported item size: 1.2 credits / GB of file storage / month'};
+}
+function folderLabel(i){if(i.folderName)return i.folderName;if(i.ownerFolder===null||i.ownerFolder==='')return 'Root';if(i.ownerFolder&&folderNames.has(i.ownerFolder))return folderNames.get(i.ownerFolder);return 'Unknown / not exposed';}
+function saveConfig(){try{localStorage.setItem('agol_governance_client_id',$('appId').value.trim());localStorage.setItem('agol_governance_portal',$('portal').value.trim())}catch(_){}}
+function showGate(note){$('authGate').hidden=false;$('appShell').hidden=true;$('authBusy').hidden=true;$('authRecovery').hidden=false;if(note)$('gateError').textContent=note;}
+function showBusy(note){$('authGate').hidden=false;$('appShell').hidden=true;$('authBusy').hidden=false;$('authRecovery').hidden=true;$('authBusyText').textContent=note||'Connecting to ArcGIS Online…';}
+function clearAutoAttempt(){try{sessionStorage.removeItem('geogovern_auto_attempt')}catch(_){}}
+
+function showApp(){clearAutoAttempt();$('authGate').hidden=true;$('appShell').hidden=false;}
+function syncGate(){ $('portal').value=$('gatePortal').value.trim();$('appId').value=$('gateClient').value.trim();saveConfig();}
+function itemURL(i){return state.portal.replace(/\/$/,'')+'/home/item.html?id='+encodeURIComponent(i.id)}
+function snapshot(){return {format:'agol-dependency-explorer-v1',exportedAt:new Date().toISOString(),portal:state.portal,scope:state.scope,partial:state.partial,items:state.items,edges:state.edges}}
+function download(name,content,type){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([content],{type}));a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
+function escCSV(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function outward(id){return state.edges.filter(e=>e.from===id).map(e=>e.to)}
+function inward(id){return state.edges.filter(e=>e.to===id).map(e=>e.from)}
+function transitive(id,reverse=true){const seen=new Set(),q=[id];while(q.length){const cur=q.shift();for(const next of reverse?inward(cur):outward(cur)){if(next!==id&&!seen.has(next)){seen.add(next);q.push(next)}}}return [...seen]}
+function counts(id){return {direct:inward(id).length,down:transitive(id).length,depends:outward(id).length}}
+
+// Conservative audit over the graph actually loaded. Edges: consumer -> referenced item.
+// "Not deprecated" is not equivalent to verified operational content.
+let archiveAudit={reports:[],byId:new Map(),affected:new Map()};
+function isDeprecated(i){return String(i?.contentStatus||'').toLowerCase()==='deprecated'}
+function isAuthoritative(i){return /authoritative/i.test(String(i?.contentStatus||''))}
+function contentLabel(i){return isDeprecated(i)?'Deprecated':isAuthoritative(i)?'Authoritative':'Not deprecated'}
+function buildArchiveAudit(){
+ const map=new Map(state.items.map(i=>[i.id,i]));const consumerAdj=new Map();
+ for(const e of state.edges){if(map.has(e.from)&&map.has(e.to)){if(!consumerAdj.has(e.to))consumerAdj.set(e.to,[]);consumerAdj.get(e.to).push(e.from)}}
+ const reports=[],byId=new Map(),affected=new Map();
+ for(const source of state.items.filter(isDeprecated)){
+  const visited=new Set([source.id]),parent=new Map(),queue=[source.id],reachable=[];
+  for(let idx=0;idx<queue.length;idx++){
+   const node=queue[idx];for(const consumer of consumerAdj.get(node)||[]){if(visited.has(consumer))continue;visited.add(consumer);parent.set(consumer,node);queue.push(consumer);reachable.push(consumer)}
+  }
+  const current=reachable.filter(id=>!isDeprecated(map.get(id))),otherDeprecated=reachable.filter(id=>isDeprecated(map.get(id)));
+  const direct=(consumerAdj.get(source.id)||[]).filter(id=>!isDeprecated(map.get(id)));
+  const level=current.length?'conflict':reachable.length?'depchain':'unlinked';
+  const report={id:source.id,item:source,level,current,otherDeprecated,direct,reachable,parent};reports.push(report);byId.set(source.id,report);
+  for(const id of current){if(!affected.has(id))affected.set(id,[]);affected.get(id).push(source.id)}
+ }
+ return {reports,byId,affected};
+}
+function archiveRisk(id){const r=archiveAudit.byId.get(id);if(r)return r.level;return archiveAudit.affected.has(id)?'affected':'normal'}
+function archiveRiskLabel(key){return {conflict:'Review before archiving',depchain:'Deprecated consumers only',unlinked:'No detected consumers',affected:'Uses deprecated source',normal:'No flagged dependency'}[key]||'Review'}
+function pathTo(report,consumerId){const path=[consumerId],seen=new Set(path);let node=consumerId;while(node!==report.id&&report.parent.has(node)){node=report.parent.get(node);if(seen.has(node))break;seen.add(node);path.unshift(node)}return path[0]===report.id?path:[]}
+function pathMarkup(path){return '<div class="archive-path">'+path.map((id,n)=>{const i=getItem(id);return (n?'<span class="path-arrow">→</span>':'')+'<button data-select="'+escapeHTML(id)+'" title="Open item in explorer">'+escapeHTML(i?.title||id)+(isDeprecated(i)?' <span class="archive-badge-inline">DEPRECATED</span>':'')+'</button>'}).join('')+'</div>'}
+function archiveDetail(i){
+ const rep=archiveAudit.byId.get(i.id);const sources=archiveAudit.affected.get(i.id)||[];
+ if(!rep&&!sources.length)return '<p class="archive-line">No cross-status dependency detected for this item in the loaded graph. This does not establish that the item is unused or safe to delete.</p>';
+ if(rep){
+  const summary='<div class="archive-risk-note"><strong class="archive-chip '+rep.level+'">'+archiveRiskLabel(rep.level)+'</strong><p>'+rep.direct.length+' direct and '+rep.current.length+' total non-deprecated downstream item(s) detected. '+rep.otherDeprecated.length+' downstream deprecated item(s).'+(i.protected===true?' Delete protection is enabled.':'')+'</p></div>';
+  const paths=rep.current.slice(0,30).map(id=>pathMarkup(pathTo(rep,id))).join('');
+  const depOnly=rep.current.length?'':'<p class="archive-line">No non-deprecated consumer found in the loaded content. Check native Used by and external systems before approving deletion.</p>';
+  return summary+'<h4>Detected impact chains</h4>'+paths+depOnly+(rep.current.length>30?'<p class="tiny">Showing 30 of '+rep.current.length+' chains. Export the impact register to review all.</p>':'');
+ }
+ return '<div class="archive-risk-note">This non-deprecated item depends on '+sources.length+' item(s) that are marked deprecated.</div>'+sources.slice(0,30).map(id=>pathMarkup(pathTo(archiveAudit.byId.get(id),i.id))).join('');
+}
+function renderArchive(){
+ archiveAudit=buildArchiveAudit();const rep=archiveAudit.reports;
+ $('archDeprecated').textContent=rep.length.toLocaleString();
+ $('archConflicts').textContent=rep.filter(r=>r.level==='conflict').length.toLocaleString();
+ $('archAffected').textContent=archiveAudit.affected.size.toLocaleString();
+ $('archUnlinked').textContent=rep.filter(r=>r.level==='unlinked').length.toLocaleString();
+ $('archiveCoverage').textContent='Scan scope: '+(state.scope==='mine'?'MY CONTENT ONLY — other owners’ consumers may be absent':state.scope==='org'?'organisation content visible to this account':state.scope==='snapshot'?'imported snapshot':'demonstration data')+'. '+(state.partial?'PARTIAL/INCOMPLETE SCAN; reference counts may be understated. ':'')+'Dependencies are inferred from readable item JSON and URLs, and may omit layer views, external organisations, FME/ETL, desktop connections and direct REST calls. No detected references is NOT deletion approval.';
+ filterArchive();
+}
+function filterArchive(){
+ const filter=$('archiveFilter').value,q=$('archiveSearch').value.toLowerCase();
+ $('archiveDirectHeading').textContent=filter==='affected'?'Direct deprecated inputs':'Direct not-deprecated consumers';$('archiveDownHeading').textContent=filter==='affected'?'All deprecated upstream':'All not-deprecated downstream';
+ let records=filter==='affected'?[...archiveAudit.affected.keys()].map(id=>({id,item:getItem(id),level:'affected',current:[],direct:[],sources:archiveAudit.affected.get(id)})):archiveAudit.reports.filter(r=>filter==='all'||r.level===filter);
+ records=records.filter(r=>r.item&&[r.item.title,r.item.owner,r.id].some(s=>String(s||'').toLowerCase().includes(q)));
+ const priority={conflict:0,affected:0,depchain:1,unlinked:2};records.sort((a,b)=>(priority[a.level]??9)-(priority[b.level]??9)||(b.current?.length||b.sources?.length||0)-(a.current?.length||a.sources?.length||0)||a.item.title.localeCompare(b.item.title));
+ $('archiveCount').textContent=records.length+' result(s)'+(state.partial?' · incomplete scan':'');
+ $('archiveRows').innerHTML=records.slice(0,500).map(r=>'<tr data-arch-id="'+escapeHTML(r.id)+'"><td><div class="a-title">'+escapeHTML(r.item.title)+'</div><div class="a-sub">'+escapeHTML(r.item.type)+' · '+escapeHTML(r.item.owner)+'</div></td><td><span class="archive-chip '+(isDeprecated(r.item)?'depchain':'normal')+'">'+contentLabel(r.item)+'</span></td><td class="num">'+(r.level==='affected'?r.sources.filter(s=>pathTo(archiveAudit.byId.get(s),r.id).length===2).length:r.direct.length)+'</td><td class="num">'+(r.level==='affected'?r.sources.length:r.current.length)+'</td><td><span class="archive-chip '+r.level+'">'+archiveRiskLabel(r.level)+'</span></td></tr>').join('')||'<tr><td colspan="5" class="empty">No findings match this filter. That is not proof of no dependencies.</td></tr>';
+}
+function exportArchive(){
+ const fields=['item_id','title','type','owner','content_status','source_type','finding','direct_nondeprecated','total_nondeprecated','other_deprecated','detected_nondeprecated_item_ids','detected_nondeprecated_titles','scope','scan_incomplete','note'];
+ const lines=[fields.map(escCSV).join(',')];
+ for(const r of archiveAudit.reports){const related=r.current.map(getItem).filter(Boolean);lines.push([r.id,r.item.title,r.item.type,r.item.owner,contentLabel(r.item),sourceType(r.item).name,archiveRiskLabel(r.level),r.direct.length,r.current.length,r.otherDeprecated.length,r.current.join(';'),related.map(i=>i.title).join(' | '),state.scope,state.partial,'Manual review required; no detected consumers does not mean safe to delete'].map(escCSV).join(','))}
+ download('morphum-geogovern-archival-impact-'+new Date().toISOString().slice(0,10)+'.csv',lines.join('\r\n'),'text/csv;charset=utf-8');
+}
+function getItem(id){return state.items.find(i=>i.id===id)}
+function creditFormat(x){return Number.isFinite(x)?x.toLocaleString('en-NZ',{minimumFractionDigits:2,maximumFractionDigits:2}):'—'}
+function renderCredits(){
+ const entries=state.items.map(i=>({item:i,estimate:creditEstimate(i)}));
+ const measurable=entries.filter(x=>x.estimate.amount!==null&&Number.isFinite(x.estimate.amount));
+ const positive=measurable.filter(x=>x.estimate.amount>0);
+ const total=positive.reduce((sum,x)=>sum+x.estimate.amount,0);
+ const selected=positive.filter(x=>bulkSelected.has(x.item.id));
+ const selectedTotal=selected.reduce((sum,x)=>sum+x.estimate.amount,0);
+ const feature=positive.filter(x=>x.estimate.category==='feature').reduce((sum,x)=>sum+x.estimate.amount,0);
+ const file=positive.filter(x=>x.estimate.category==='file').reduce((sum,x)=>sum+x.estimate.amount,0);
+ const missing=entries.filter(x=>x.estimate.amount===null).length;
+ $('creditScope').textContent=state.scope==='demo'?'Demonstration data':state.scope==='snapshot'?'Imported snapshot':state.scope==='org'?'Organisation inventory':'My content inventory';
+ $('creditMonthly').textContent=creditFormat(total)+' cr';
+ $('creditAnnual').textContent=creditFormat(total*12)+' cr';
+ $('creditSelected').textContent=creditFormat(selectedTotal)+' cr';
+ $('creditCoverage').textContent=state.items.length?Math.round(measurable.length/state.items.length*100)+'%':'—';
+ $('creditMissing').textContent=missing+' items not measurable'+(state.partial?' · incomplete scan':'');
+ $('creditFeature').textContent=creditFormat(feature)+' cr/month';
+ $('creditFile').textContent=creditFormat(file)+' cr/month';
+ $('creditCandidateAnnual').textContent=creditFormat(selectedTotal*12)+' cr/year';
+ $('creditCandidateCount').textContent=selected.length+' / '+bulkSelected.size+' selected';
+ const top=positive.sort((a,b)=>b.estimate.amount-a.estimate.amount).slice(0,8);
+ const max=top.length?top[0].estimate.amount:1;
+ $('creditTop').innerHTML=top.length?top.map(x=>'<div class="credit-bar-row"><button data-credit-item="'+escapeHTML(x.item.id)+'" title="Inspect item">'+escapeHTML(x.item.title)+'</button><div class="credit-track"><div class="credit-fill" style="width:'+Math.max(1,x.estimate.amount/max*100).toFixed(1)+'%"></div></div><span class="credit-value">'+creditFormat(x.estimate.amount)+'</span></div>').join('')+'<p>Values in credits / month. Click a title to inspect the source item.</p>':'<div class="credit-empty">No measurable storage credits in this inventory. Check item sizes or use the official ArcGIS storage report.</div>';
+}
+function exportCredits(){
+ const columns=['id','title','type','owner','folder','source_type','size_bytes','estimate_category','estimated_monthly_credits','estimated_annual_credits','selected_archive_candidate','content_status','archive_risk','caveat'];
+ const lines=[columns.map(escCSV).join(',')];
+ for(const i of state.items){const c=creditEstimate(i),row=[i.id,i.title,i.type,i.owner,folderLabel(i),sourceType(i).name,i.size??'',c.category,c.amount??'',c.amount==null?'':c.amount*12,bulkSelected.has(i.id)?'yes':'no',contentLabel(i),archiveRisk(i.id),c.reason];lines.push(row.map(escCSV).join(','))}
+ download('geogovern-storage-credit-proxies-'+new Date().toISOString().slice(0,10)+'.csv',lines.join('\r\n'),'text/csv;charset=utf-8');
+}
+function render(){const items=state.items,types=[...new Set(items.map(i=>i.type))].sort();const prior=$('type').value;$('type').innerHTML='<option value="">All item types</option>'+types.map(t=>'<option value="'+escapeHTML(t)+'">'+escapeHTML(t)+'</option>').join('');$('type').value=types.includes(prior)?prior:'';const folders=[...new Set(items.map(folderLabel))].sort();const oldFolder=$('folder').value;$('folder').innerHTML='<option value="">All folders</option>'+folders.map(f=>'<option value="'+escapeHTML(f)+'">'+escapeHTML(f)+'</option>').join('');$('folder').value=folders.includes(oldFolder)?oldFolder:'';const oldSource=$('source').value;const sourceTypes=[...new Map(items.map(i=>{const t=sourceType(i);return [t.key,t]})).values()].sort((a,b)=>a.name.localeCompare(b.name));$('source').innerHTML='<option value="">All source types</option>'+sourceTypes.map(x=>'<option value="'+escapeHTML(x.key)+'">'+escapeHTML(x.name)+'</option>').join('');$('source').value=sourceTypes.some(s=>s.key===oldSource)?oldSource:'';
+ $('k-items').textContent=items.length.toLocaleString();$('k-layers').textContent=items.filter(i=>kind(i)==='layer').length.toLocaleString();$('k-edges').textContent=state.edges.length.toLocaleString();$('k-orphans').textContent=items.filter(i=>kind(i)==='layer'&&!inward(i.id).length).length.toLocaleString();$('k-max').textContent=Math.max(0,...items.map(i=>inward(i.id).length)).toLocaleString();renderArchive();filterRows();updateSelectionUI();renderCredits();if(state.selected&&!getItem(state.selected))state.selected=null;if(!state.selected&&items.length)state.selected=[...items].sort((a,b)=>inward(b.id).length-inward(a.id).length)[0].id;renderDetail();}
+function filterRows(){const q=$('search').value.toLowerCase(),t=$('type').value,f=$('folder').value,source=$('source').value,sort=$('sort').value,status=$('statusFilter').value,risk=$('riskFilter').value;const matches=state.items.filter(i=>(!status||(status==='deprecated'?isDeprecated(i):status==='authoritative'?isAuthoritative(i):!isDeprecated(i)))&&(!risk||archiveRisk(i.id)===risk)&&(!t||i.type===t)&&(!f||folderLabel(i)===f)&&(!source||sourceType(i).key===source)&&(!q||[i.title,i.id,i.owner,i.type,folderLabel(i)].some(v=>String(v||'').toLowerCase().includes(q))));matches.sort((a,b)=>sort==='title'?a.title.localeCompare(b.title):sort==='modified'?(b.modified||0)-(a.modified||0):sort==='downstream'?transitive(b.id).length-transitive(a.id).length:sort==='credit'?(creditEstimate(b).amount||0)-(creditEstimate(a).amount||0):inward(b.id).length-inward(a.id).length);state.filteredIds=matches.map(x=>x.id);$('count').textContent=matches.length+' results'+(state.partial?' · scan incomplete':'');$('rows').innerHTML=matches.slice(0,1000).map(i=>{const c=counts(i.id);return '<tr class="item-row '+(i.id===state.selected?'selected':'')+'" data-id="'+escapeHTML(i.id)+'"><td class="check-col"><input class="row-check" type="checkbox" data-checkbox="'+escapeHTML(i.id)+'" aria-label="Select '+escapeHTML(i.title)+'" '+(bulkSelected.has(i.id)?'checked':'')+'></td><td><div class="name" title="'+escapeHTML(i.title)+'">'+escapeHTML(i.title)+'</div><div class="muted">'+escapeHTML(i.id.slice(0,12))+'…</div></td><td><span class="tag">'+escapeHTML(i.type)+'</span><div class="muted">'+escapeHTML(i.owner)+'</div><div class="muted">📁 '+escapeHTML(folderLabel(i))+'</div><div><span class="archive-chip '+(isDeprecated(i)?'depchain':'normal')+'">'+contentLabel(i)+'</span> '+(archiveRisk(i.id)!=='normal'?'<span class="archive-chip '+archiveRisk(i.id)+'">'+archiveRiskLabel(archiveRisk(i.id))+'</span>':'')+'</div></td><td class="num"><span class="tag '+(c.direct>=5?'high':c.direct?'low':'')+'">'+c.direct+'</span></td><td class="num">'+c.down+'</td></tr>'}).join('')||'<tr><td colspan="5" class="empty">No matching items</td></tr>';}
+function select(id){state.selected=id;filterRows();renderDetail();}
+function relationCards(ids,limit=7){return ids.length?ids.slice(0,limit).map(id=>{const it=getItem(id);return '<button class="rel-card" data-select="'+escapeHTML(id)+'"><strong>'+escapeHTML(it?.title||id)+'</strong><small>'+escapeHTML(it?.type||'Unknown')+' · '+escapeHTML(it?.owner||'')+(isDeprecated(it)?' · DEPRECATED':'')+'</small></button>'}).join('')+(ids.length>limit?'<div class="rel-more">+'+(ids.length-limit)+' more in the details below</div>':''):'<div class="rel-muted">None detected in loaded items</div>'}
+function drawGraph(id){const item=getItem(id);if(!item)return;const dep=outward(id),cons=inward(id);$('graph').innerHTML='<div class="rel-col"><div class="rel-label">1 · Uses these <span class="rel-count">('+dep.length+')</span></div>'+relationCards(dep)+'</div><div class="rel-arrow">→</div><div class="rel-col"><div class="rel-label">2 · Selected item</div><div class="rel-focus">'+escapeHTML(item.title)+'<small>'+escapeHTML(item.type)+' · '+contentLabel(item)+'</small></div></div><div class="rel-arrow">→</div><div class="rel-col"><div class="rel-label">3 · Used by <span class="rel-count">('+cons.length+')</span></div>'+relationCards(cons)+'</div>';}
+function renderDetail(){const i=getItem(state.selected);if(!i){$('detail').innerHTML='<div class="empty">Select an item to inspect its dependencies.</div>';$('graph').innerHTML='';return}const c=counts(i.id),cons=inward(i.id),deps=outward(i.id),deep=transitive(i.id).filter(id=>!cons.includes(id));const buttons=ids=>ids.length?ids.slice(0,100).map(id=>{const d=getItem(id);return '<button class="chip" data-select="'+escapeHTML(id)+'">'+escapeHTML(d?.title||id)+'</button>'}).join(''):'<span class="muted">None detected</span>';
+const est=creditEstimate(i),fmtDate=x=>x?new Date(x).toLocaleDateString():'Unknown';
+$('detail').innerHTML='<h3>'+escapeHTML(i.title)+'</h3><p><span class="tag">'+escapeHTML(i.type)+'</span> &nbsp; <span class="source-pill '+sourceType(i).key+'">'+escapeHTML(sourceType(i).name)+'</span> &nbsp; <a href="'+itemURL(i)+'" target="_blank" rel="noopener noreferrer">Open AGOL item ↗</a></p><div class="meta"><div><span>Owner</span><strong>'+escapeHTML(i.owner)+'</strong></div><div><span>Folder</span><strong>'+escapeHTML(folderLabel(i))+'</strong></div><div><span>Direct consumers</span><strong>'+c.direct+'</strong></div><div><span>All downstream</span><strong>'+c.down+'</strong></div><div><span>Data source</span><strong>'+escapeHTML(sourceType(i).name)+'</strong></div><div><span>Content status</span><strong>'+escapeHTML(i.contentStatus||'Normal')+'</strong></div><div><span>Item size</span><strong>'+formatSize(i.size)+'</strong></div><div><span>Est. hosting credits/month</span><strong>'+(est.amount==null?'Not available':est.amount.toFixed(3)+' cr')+'</strong></div></div><div class="detail-tabset"><button class="active" data-tab="relationships">Relationships</button><button data-tab="metadata">Item metadata</button><button data-tab="storage">Storage & credits</button><button data-tab="archive">Archive impact</button></div><section id="tab-relationships"><strong>Directly referenced by ('+cons.length+')</strong><div class="dependents">'+buttons(cons)+'</div><div class="sep"></div><strong>Indirect downstream consumers ('+deep.length+')</strong><div class="dependents">'+buttons(deep)+'</div><div class="sep"></div><strong>Uses these items ('+deps.length+')</strong><div class="dependents">'+buttons(deps)+'</div><p class="tiny">Relationships are inferred from available item JSON and service URLs, not a complete ArcGIS dependency audit. A zero count does not prove an item is unused.</p></section><section id="tab-metadata" hidden><div id="metadataBody">'+metadataMarkup(i)+'</div></section><section id="tab-storage" hidden><div class="meta-rich"><div><label>Item size (REST API)</label><strong>'+formatSize(i.size)+'</strong></div><div><label>Indicative credits / month</label><strong>'+(est.amount==null?'Unavailable':est.amount.toFixed(3))+'</strong></div></div><p class="credit-note">'+escapeHTML(est.reason)+'. Estimate only: item.size is not necessarily billed storage. Feature attachments, replicas, sync, derived caches, imagery rules and other costs may be excluded. Validate in Organisation → Status → Storage.</p><a href="https://doc.arcgis.com/en/arcgis-online/administer/credits.htm" target="_blank" rel="noopener noreferrer">Esri credit rates ↗</a></section><section id="tab-archive" hidden>'+archiveDetail(i)+'</section>';
+$('detail').querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>{$('detail').querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===btn));for(const tab of ['relationships','metadata','storage','archive'])$('tab-'+tab).hidden=tab!==btn.dataset.tab;if(btn.dataset.tab==='metadata')fetchMetadata(i.id);});drawGraph(i.id);}
+function metadataMarkup(i){const txt=(v)=>escapeHTML(typeof v==='string'?v:'Not provided');return '<div class="meta-rich"><div><label>Item ID</label><strong>'+txt(i.id)+'</strong></div><div><label>Item type</label><strong>'+txt(i.type)+'</strong></div><div><label>Owner</label><strong>'+txt(i.owner)+'</strong></div><div><label>Sharing</label><strong>'+txt(i.access)+'</strong></div><div><label>Folder</label><strong>'+escapeHTML(folderLabel(i))+'</strong></div><div><label>Created</label><strong>'+(i.created?new Date(i.created).toLocaleString():'Not reported')+'</strong></div><div><label>Modified</label><strong>'+(i.modified?new Date(i.modified).toLocaleString():'Not reported')+'</strong></div><div><label>Source classification</label><strong>'+escapeHTML(sourceType(i).name)+'</strong></div><div><label>AGOL content status</label><strong>'+escapeHTML(i.contentStatus||'Normal')+'</strong></div><div><label>Delete protected</label><strong>'+(i.protected===true?'Yes':i.protected===false?'No':'Unknown')+'</strong></div><div><label>Item size</label><strong>'+formatSize(i.size)+'</strong></div><div><label>Views</label><strong>'+escapeHTML(i.numViews??'Not reported')+'</strong></div><div><label>License</label><strong>'+txt(i.licenseInfo)+'</strong></div></div><div class="detail-section"><strong>Summary</strong><div class="description">'+txt(i.snippet)+'</div></div><div class="detail-section"><strong>Description</strong><div class="description">'+escapeHTML(i.description?i.description.replace(/<[^>]*>/g,' ').replace(/&nbsp;/gi,' '):'Not provided')+'</div></div><div class="detail-section"><strong>Tags</strong><div class="description">'+escapeHTML((i.tags||[]).join(' · ')||'Not provided')+'</div></div><div class="detail-section"><strong>Terms of use</strong><div class="description">'+escapeHTML(i.accessInformation||'Not provided')+'</div></div>'}
+async function fetchMetadata(id){const el=$('metadataBody');if(!el)return;if(metadataCache.has(id)){el.innerHTML=metadataMarkup(metadataCache.get(id));return}if(!state.credential)return;el.insertAdjacentHTML('beforeend','<p class="tiny">Loading detailed metadata…</p>');try{const detail=await request('content/items/'+encodeURIComponent(id));const i=getItem(id);if(!i)return;Object.assign(i,detail);metadataCache.set(id,i);if(state.selected===id&&$('metadataBody'))$('metadataBody').innerHTML=metadataMarkup(i);}catch(e){if(state.selected===id&&$('metadataBody'))$('metadataBody').insertAdjacentHTML('beforeend','<p class="tiny">Detailed metadata unavailable: '+escapeHTML(e.message)+'</p>')}}
+async function request(path,params={}){if(!state.credential)throw Error('Not signed in');const token=state.credential.token;const url=state.portal.replace(/\/$/,'')+'/sharing/rest/'+path.replace(/^\//,'');const body=new URLSearchParams({f:'json',token,...params});const res=await fetch(url,{method:'POST',body,headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},mode:'cors'});if(!res.ok)throw Error('HTTP '+res.status+' while accessing '+path);const data=await res.json();if(data.error)throw Error(data.error.message||'ArcGIS API error');return data}
+async function auth(resume=false){
+  if(!window.require){setStatus('ArcGIS SDK failed to load. Check internet/CDN access.',true);showGate('ArcGIS SDK failed to load. Check your browser network access.');return}
+  const id=$('appId').value.trim();
+  if(!id){if(!resume){setStatus('Enter an OAuth Client ID registered for this hosted page.',true);showGate('Enter your OAuth Client ID.')}return}
+  const url=$('portal').value.trim().replace(/\/$/,'');
+  if(!/^https:\/\/[\w.-]+(?::\d+)?(?:\/[^?#]*)?$/.test(url)){setStatus('Enter a valid HTTPS portal URL.',true);return}
+  state.portal=url;
+  // Persist non-secret configuration BEFORE navigating to the OAuth login page.
+  try{sessionStorage.setItem('agol_governance_client_id',id);sessionStorage.setItem('agol_governance_portal',url)}catch(_){}
+  setStatus(resume?'Checking existing ArcGIS sign-in…':'Opening ArcGIS sign-in…');showBusy(resume?'Restoring your ArcGIS Online session…':'Redirecting to secure ArcGIS sign-in…');
+  window.require(['esri/identity/OAuthInfo','esri/identity/IdentityManager'],async(OAuthInfo,identityManager)=>{
+    try{
+      const info=new OAuthInfo({appId:id,portalUrl:url,popup:false,flowType:'auto'});
+      state.oauth=info;
+      identityManager.registerOAuthInfos([info]);
+      const endpoint=url+'/sharing';
+      // On reload, never trigger another login unexpectedly. Only restore a previous sign-in.
+      if(resume){
+        try{state.credential=await identityManager.checkSignInStatus(endpoint)}
+        catch(_){setStatus('Not connected. Sign in to continue.');showGate('Your previous ArcGIS session could not be restored. Select Sign in to try again.');return}
+      }else{
+        try{state.credential=await identityManager.checkSignInStatus(endpoint)}
+        catch(_){state.credential=await identityManager.getCredential(endpoint)}
+      }
+      const me=await request('community/self');
+      if(!me.username)throw Error('Unable to obtain the signed-in ArcGIS username');
+      state.user=me.username;
+      state.orgid=me.orgId;
+      $('account').textContent='Signed in: '+me.username+' · Review & manage';showApp();
+      for(const name of ['mine','org','refresh'])$(name).disabled=false;
+      setStatus('Connected. Loading your items…');
+      await load('mine');
+    }catch(e){setStatus('Sign-in failed: '+(e?.message||String(e)),true);showGate('Sign-in failed: '+(e?.message||String(e)))}
+  },err=>setStatus('Unable to load ArcGIS authentication modules: '+(err?.message||String(err)),true))
+}
+async function load(scope){if(!state.credential){setStatus('Sign in first.',true);return}if(scope==='org'&&!state.orgid){setStatus('Your account is not associated with an organisation.',true);return}state.stopped=false;state.loading=true;cancelBulkPlan();state.partial=true;state.scope=scope;$('scope').textContent=scope==='mine'?'My content':'Organisation content';$('progress').hidden=false;$('stop').hidden=false;['mine','org','refresh'].forEach(k=>$(k).disabled=true);const q=scope==='mine'?'owner:'+state.user:'orgid:'+state.orgid;let items=[],start=1,total=0;try{do{if(state.stopped)break;const batch=await request('search',{q,num:'100',start:String(start),sortField:'modified',sortOrder:'desc'});items.push(...(batch.results||[]));total=batch.total||items.length;start=batch.nextStart||-1;setStatus('Loading inventory: '+items.length.toLocaleString()+' / '+total.toLocaleString());$('bar').style.width=Math.min(40,40*items.length/Math.max(total,1))+'%';if(items.length>=10000){state.partial=true;break}}while(start>0);state.items=items.map(i=>({ ...i,title:i.title||i.id,type:i.type||'Unknown',owner:i.owner||'',access:i.access||'',modified:i.modified||0,url:i.url||'',typeKeywords:i.typeKeywords||[]}));folderNames.clear();{try{const folderData=await request('content/users/'+encodeURIComponent(state.user));(folderData.folders||[]).forEach(f=>folderNames.set(f.id,f.title));}catch(e){setStatus('Folder lookup not available: '+e.message)}}if(folderNames.size){
+  for(const [folderId,title] of folderNames){
+    let fstart=1;let laps=0;
+    try{do{const data=await request('content/users/'+encodeURIComponent(state.user)+'/'+encodeURIComponent(folderId),{start:String(fstart),num:'100'});const match=new Set((data.items||[]).map(it=>it.id));state.items.forEach(it=>{if(match.has(it.id)){it.ownerFolder=folderId;it.folderName=title}});fstart=data.nextStart||-1;}
+      while(fstart>0&&++laps<100&&!state.stopped);
+    }catch(e){setStatus('Some folder assignments could not be loaded: '+e.message)}
+  }
+  state.items.forEach(it=>{if(it.owner===state.user&&!it.folderName){it.ownerFolder=null;it.folderName='Root'}});
+}
+state.items.forEach(i=>{i.folderName=i.folderName||folderLabel(i)});populateBulkFolders();bulkSelected.clear();cancelBulkPlan();state.edges=[];state.selected=null;render();const scan=state.items.filter(i=>DATA_TYPES.test(i.type)||/Web Map|Web Scene|Feature Service|Feature Layer|Map Service/i.test(i.type));let index=0,done=0,fail=0;const allIds=new Set(state.items.map(i=>i.id));const serviceMap=new Map();for(const it of state.items){const u=normalizeUrl(it.url);if(u)serviceMap.set(u,it.id)}const edgeSet=new Set();function harvest(data,from){const refs=new Set(),visited=new WeakSet();function walk(o,key='',depth=0){if(depth>35||o==null)return;if(typeof o==='string'){if(isId(o)&&/^(itemid|webmap|webmapid|webscene|websceneid|mapid|sceneid|sourceitemid|portalitemid|item|id)$/i.test(key))refs.add(o.toLowerCase());const u=normalizeUrl(o);if(/^https?:\/\//.test(u)){if(serviceMap.has(u))refs.add(serviceMap.get(u));else for(const [known,target] of serviceMap){if(u.startsWith(known+'/')&&/^\/(?:\d+|featureserver|mapserver|imageserver)/i.test(u.slice(known.length)))refs.add(target)}}return}if(typeof o!=='object'||visited.has(o))return;visited.add(o);if(Array.isArray(o)){o.forEach(v=>walk(v,key,depth+1));return}for(const [k,v] of Object.entries(o)){if(k==='token'||k==='password')continue;walk(v,k,depth+1)}}walk(data);for(const to of refs){if(allIds.has(to)&&to!==from)edgeSet.add(from+'|'+to)}}
+// URL references in item metadata are also considered (e.g. an app configured against a service).
+for(const it of state.items){if(!it.url)continue;const url=normalizeUrl(it.url);for(const [service,id] of serviceMap){if(id!==it.id&&url===service)edgeSet.add(it.id+'|'+id)}}
+async function worker(){while(!state.stopped){const n=index++;if(n>=scan.length)break;const it=scan[n];try{const data=await request('content/items/'+encodeURIComponent(it.id)+'/data');harvest(data,it.id)}catch(_){fail++}done++;if(done%5===0||done===scan.length){state.edges=[...edgeSet].map(s=>{const [from,to]=s.split('|');return {from,to}});$('bar').style.width=(40+60*done/Math.max(scan.length,1))+'%';setStatus('Scanning definitions: '+done+' / '+scan.length+(fail?' · '+fail+' inaccessible/non-JSON':''));if(done%25===0)render()}}}
+await Promise.all(Array.from({length:Math.min(4,scan.length)},worker));state.edges=[...edgeSet].map(s=>{const [from,to]=s.split('|');return {from,to}});state.partial=state.stopped||items.length>=10000||fail>0;render();setStatus(state.stopped?'Scan stopped; counts are partial.':`Loaded ${state.items.length} items; detected ${state.edges.length} links`+(state.partial?' · Some relationships may be missing.':''))}catch(e){state.partial=true;setStatus('Scan error: '+e.message,true);render()}finally{state.loading=false;updateSelectionUI();$('progress').hidden=true;$('stop').hidden=true;['mine','org','refresh'].forEach(k=>$(k).disabled=!state.credential)}}
+function demo(){state.portal='https://www.arcgis.com';state.scope='demo';state.partial=false;bulkSelected.clear();cancelBulkPlan();$('scope').textContent='Demo dataset';const names=[['Asset Inventory','Feature Service'],['Inspection Records','Feature Service'],['Project Boundaries','Feature Service'],['Asset Condition Map','Web Map'],['Field Inspection Map','Web Map'],['Risk Overview','Dashboard'],['Inspector Workspace','Web Mapping Application'],['Project Status','Dashboard'],['Legacy Map','Web Map'],['Field Survey','Form']];state.items=names.map(([title,type],n)=>({id:(n+1).toString(16).padStart(32,'0'),title,type,owner:n%2?'gis_team':'admin',access:n%3?'org':'private',modified:Date.now()-n*86400000*12,url:'',ownerFolder:n%2?null:'folder-demo',folderName:n%2?'Root':'Inspections',size:Math.round((n+1)*2800000),snippet:'Sample item for illustrating dependencies.',description:'Sample governance metadata.',tags:['Demo','AGOL'],created:Date.now()-n*86400000*40,contentStatus:[0,1,8].includes(n)?'deprecated':(n===5?'org_authoritative':''),protected:n===8,typeKeywords:type==='Feature Service'?['Hosted Service']:[]}));const edgePairs=[[3,0],[3,1],[4,0],[4,1],[4,2],[5,3],[6,4],[7,3],[7,2],[9,1]];state.edges=edgePairs.map(([a,b])=>({from:state.items[a].id,to:state.items[b].id}));state.selected=state.items[0].id;setStatus('Demo content loaded. Connect to AGOL to see real account data.');render()}
+
+// Bulk management: all writes are driven by an explicit, reviewed user action.
+function isLive(){return !!state.credential&&!!state.user&&['mine','org'].includes(state.scope)&&!state.loading}
+function selectedItems(){return [...bulkSelected].map(getItem).filter(Boolean)}
+function ownedItems(){return selectedItems().filter(i=>i.owner===state.user)}
+function canManage(){return isLive()&&!bulkRunning}
+function updateSelectionUI(){
+ const n=selectedItems().length;$('selectedCount').textContent=n+' selected';
+ $('checkVisible').checked=(state.filteredIds||[]).slice(0,100).length>0&&(state.filteredIds||[]).slice(0,100).every(id=>bulkSelected.has(id));
+ $('checkVisible').indeterminate=!$('checkVisible').checked&&(state.filteredIds||[]).slice(0,100).some(id=>bulkSelected.has(id));
+ $('adminMode').textContent=state.scope==='demo'||state.scope==='snapshot'?'Demo / snapshot — writes disabled':!state.credential?'Sign in to manage items':state.loading?'Scanning — writes paused':'Live — owner-only edits';
+ $('adminMode').classList.toggle('on',canManage());
+ renderCredits();
+}
+function cancelBulkPlan(){bulkPlan=null;if($('bulkConfirm'))$('bulkConfirm').hidden=true;if($('bulkApply'))$('bulkApply').disabled=true;if($('bulkPreview'))$('bulkPreview').textContent='Nothing queued.';if($('bulkImpact'))$('bulkImpact').innerHTML='<strong>No pending changes</strong><div class="tiny">Select your own items and click Preview changes.</div>';updateSelectionUI();}
+function selectMany(ids,checked){if(bulkRunning)return;if(checked&&ids.length+bulkSelected.size>100){showBulkMessage('Please manage a maximum of 100 items per batch.');ids=ids.slice(0,Math.max(0,100-bulkSelected.size))}for(const id of ids){if(checked)bulkSelected.add(id);else bulkSelected.delete(id)}cancelBulkPlan();filterRows();updateSelectionUI();}
+function populateBulkFolders(){const s=$('bulkFolder');if(!s)return;const old=s.value;s.innerHTML='<option value="/">Root folder</option>'+[...folderNames].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,title])=>'<option value="'+escapeHTML(id)+'">'+escapeHTML(title)+'</option>').join('');if([...s.options].some(o=>o.value===old))s.value=old}
+function actionFields(){const a=$('bulkAction').value;for(const [id,visible] of [['bulkFolderWrap',a==='move'],['bulkTagWrap',a==='tags'],['bulkTextWrap',['snippet','description'].includes(a)],['bulkTitleWrap',a==='title']])$(id).hidden=!visible;if(a==='snippet'||a==='description'){$('bulkTextLabel').textContent=a==='snippet'?'New summary / snippet':'New description';$('bulkTextHelp').textContent=a==='snippet'?'Existing summaries will be replaced for the selected items.':'Existing HTML descriptions will be replaced with the exact text entered.'}cancelBulkPlan();}
+function buildChange(item,a){
+ const payload={};let target='';
+ if(a==='move'){
+  const folder=$('bulkFolder').value;
+  if(!folder)throw Error('Choose a destination folder');
+  if((item.ownerFolder||'/')===folder)return {skip:true,after:'Already in destination folder'};
+  target=$('bulkFolder').selectedOptions[0]?.textContent||folder;
+  return {payload:{folder},after:'Move to '+target};
+ }
+ if(a==='tags'){
+  const tags=$('bulkTags').value.split(',').map(x=>x.trim()).filter(Boolean),mode=$('bulkTagMode').value;
+  if(!tags.length)throw Error('Enter at least one tag');
+  const existing=Array.isArray(item.tags)?item.tags:[],key=x=>x.toLowerCase(),requested=new Set(tags.map(key));
+  let merged=mode==='replace'?tags:mode==='remove'?existing.filter(t=>!requested.has(key(t))):[...existing,...tags.filter(t=>!existing.some(v=>key(v)===key(t)))];
+  merged=[...new Map(merged.map(t=>[key(t),t])).values()];
+  if(!merged.length)throw Error('At least one tag must remain on each item');
+  if(merged.length>128)throw Error('Too many tags for '+item.title);
+  if(JSON.stringify(merged)===JSON.stringify(existing))return {skip:true,after:'Tags unchanged'};
+  payload.tags=merged.join(',');return {payload,after:mode+' tags: '+merged.join(', ')};
+ }
+ if(a==='snippet'||a==='description'){
+  const value=$('bulkText').value.trim();if(!value)throw Error('Enter text before previewing');
+  if(a==='snippet'&&value.length>250)throw Error('Summaries must be 250 characters or fewer');
+  if(String(item[a]||'').trim()===value)return {skip:true,after:'Already matches'};
+  payload[a]=value;return {payload,after:'Replace '+(a==='snippet'?'summary':'description')+' ('+value.length+' chars)'};
+ }
+ if(a==='title'){
+  const text=$('bulkTitleText').value;if(!text.trim())throw Error('Enter a title prefix or suffix');
+  const mode=$('bulkTitleMode').value;
+  const title=mode==='prefix'?text+item.title:item.title+text;
+  if(title===item.title)return {skip:true,after:'Unchanged'};
+  if(title.length>255)throw Error('Resulting title is too long: '+item.title);
+  payload.title=title;return {payload,after:title};
+ }
+ if(a==='deprecated'){if(item.contentStatus==='deprecated')return {skip:true,after:'Already deprecated'};if(/authoritative/.test(item.contentStatus||''))throw Error('Authoritative content requires individual review: '+item.title);return {payload:{status:'deprecated'},after:'Set Deprecated badge'};}
+ if(a==='clearstatus'){if(!item.contentStatus)return {skip:true,after:'No content status to clear'};if(item.contentStatus!=='deprecated')throw Error('Refusing to remove an authoritative badge in bulk: '+item.title);return {payload:{status:'',clearEmptyFields:'true'},after:'Clear Deprecated badge'};}
+ if(a==='protect'){if(item.protected===true)return {skip:true,after:'Already protected'};return {payload:{},after:'Enable delete protection'};}
+ if(a==='unprotect'){if(item.protected===false)return {skip:true,after:'Already unprotected'};if(/authoritative/.test(item.contentStatus||''))throw Error('Authoritative item cannot be unprotected via bulk action: '+item.title);return {payload:{},after:'Disable delete protection'};}
+ throw Error('Unsupported action');
+}
+async function previewChanges(){
+ cancelBulkPlan();if(!canManage()){showBulkMessage('Sign in and load live items before editing.');return}
+ const selection=selectedItems();if(selection.length>100){showBulkMessage('Maximum 100 items per operation. Please narrow your selection.');return}if(!selection.length){showBulkMessage('Select one or more items from the content library first.');return}
+ const notOwned=selection.filter(i=>i.owner!==state.user);
+ if(notOwned.length){showBulkMessage(notOwned.length+' selected item(s) are not owned by '+state.user+'. This version only edits your own content.');return}
+ const action=$('bulkAction').value;
+ try{
+  // Fetch the newest item metadata for a trustworthy preview and to avoid overwriting stale tags.
+  const entries=[];for(const i of selection){const detail=await request('content/items/'+encodeURIComponent(i.id));if(detail.owner!==state.user)throw Error('Ownership changed: '+i.title);Object.assign(i,detail);metadataCache.set(i.id,i);entries.push({id:i.id,title:i.title,owner:i.owner,originalModified:i.modified,action,...buildChange(i,action),downstream:transitive(i.id).length,direct:inward(i.id).length});}
+  bulkPlan={action,entries,portal:state.portal,user:state.user,scope:state.scope,created:Date.now()};
+  const work=entries.filter(x=>!x.skip);const downstream=work.reduce((a,b)=>a+b.downstream,0),unique=new Set(work.flatMap(x=>transitive(x.id))).size;
+  $('bulkImpact').innerHTML='<strong>'+work.length+' change(s) pending</strong> · '+(entries.length-work.length)+' unchanged<div class="tiny">'+unique+' unique downstream item(s) detected; '+downstream+' total per-item downstream links. '+work.filter(x=>archiveAudit.byId.get(x.id)?.level==='conflict').length+' selected deprecated item(s) have non-deprecated dependents. '+(state.partial?'Dependency scan incomplete — extra caution required.':'Scan counts are indicative.')+'</div>';
+  $('bulkPreview').textContent=entries.map((x,n)=>String(n+1).padStart(3,'0')+'  '+x.title+'\n     '+(x.skip?'SKIP — ':'CHANGE — ')+x.after+'\n     Direct consumers: '+x.direct+'; downstream: '+x.downstream+'; ID: '+x.id).join('\n\n');
+  $('bulkConfirm').hidden=!work.length;$('bulkAcknowledged').checked=false;$('bulkPhrase').value='';$('bulkApply').disabled=true;
+  if(!work.length)showBulkMessage('All selected items already have the requested value. No changes needed.');
+ }catch(e){cancelBulkPlan();showBulkMessage('Preview failed: '+e.message)}
+}
+function showBulkMessage(msg){$('bulkResults').innerHTML='<div>'+escapeHTML(msg)+'</div>'}
+async function doChange(entry){
+ const item=getItem(entry.id);if(!item||item.owner!==state.user)throw Error('Ownership no longer matches signed-in user');
+ // Optimistic concurrency guard: refresh before the write, fail if an item changed since preview.
+ const latest=await request('content/items/'+encodeURIComponent(entry.id));
+ if(latest.owner!==state.user)throw Error('Item ownership changed since preview');
+ if(Number(latest.modified)!==Number(entry.originalModified))throw Error('Item changed since preview. Refresh, review and retry');
+ const own='content/users/'+encodeURIComponent(state.user);
+ if(entry.action==='move'){
+  const r=await request(own+'/moveItems',{items:entry.id,folder:entry.payload.folder});
+  const result=r.results?.find(x=>(x.itemId||x.id)===entry.id)||r.results?.[0];
+  if(!result?.success)throw Error(result?.error?.message||'Move operation did not confirm success');
+  item.ownerFolder=entry.payload.folder==='/'?null:entry.payload.folder;item.folderName=entry.payload.folder==='/'?'Root':folderNames.get(entry.payload.folder)||'Unknown';
+ }else if(['tags','snippet','description','title'].includes(entry.action)){
+  const r=await request(own+'/items/'+encodeURIComponent(entry.id)+'/update',entry.payload);
+  if(!r.success)throw Error('ArcGIS did not confirm metadata update');
+ }else if(entry.action==='deprecated'||entry.action==='clearstatus'){
+  const r=await request('content/items/'+encodeURIComponent(entry.id)+'/setContentStatus',entry.payload);
+  if(!r.success)throw Error(r.error?.message||'ArcGIS did not confirm status update');
+ }else if(entry.action==='protect'||entry.action==='unprotect'){
+  const path=own+'/items/'+encodeURIComponent(entry.id)+'/'+(entry.action==='protect'?'protect':'unprotect');
+  const r=await request(path);if(!r.success)throw Error('ArcGIS did not confirm delete protection change');
+ }
+ // Reload current metadata rather than assuming success fields, which may be normalised by ArcGIS.
+ const updated=await request('content/items/'+encodeURIComponent(entry.id));Object.assign(item,updated);metadataCache.set(item.id,item);
+ return item;
+}
+async function applyChanges(){
+ if(!bulkPlan||bulkRunning||!canManage())return;
+ if(!$('bulkAcknowledged').checked||$('bulkPhrase').value.trim()!=='APPLY')return;
+ if(bulkPlan.portal!==state.portal||bulkPlan.user!==state.user||bulkPlan.scope!==state.scope){showBulkMessage('Connection or scope changed. Preview again.');cancelBulkPlan();return}
+ const jobs=bulkPlan.entries.filter(e=>!e.skip);
+ if(!jobs.length)return;
+ bulkRunning=true;$('bulkApply').disabled=true;$('bulkApply').textContent='Applying changes…';$('previewBulk').disabled=true;
+ $('bulkResults').innerHTML='';
+ for(const entry of jobs){
+  try{await doChange(entry);bulkAudit.push({time:new Date().toISOString(),portal:state.portal,id:entry.id,title:entry.title,action:entry.action,outcome:'Success',detail:entry.after});}
+  catch(e){bulkAudit.push({time:new Date().toISOString(),portal:state.portal,id:entry.id,title:entry.title,action:entry.action,outcome:'Failed',detail:e.message});}
+  $('bulkResults').innerHTML=bulkAudit.map(a=>'<div class="'+(a.outcome==='Success'?'ok':'error')+'">'+escapeHTML(a.outcome)+' · '+escapeHTML(a.title)+' — '+escapeHTML(a.detail)+'</div>').join('');
+ }
+ bulkRunning=false;$('bulkApply').textContent='Apply changes to ArcGIS Online';$('previewBulk').disabled=false;$('exportAudit').disabled=!bulkAudit.length;
+ const ok=bulkAudit.filter(a=>a.outcome==='Success').length;
+ setStatus('Bulk operation completed: '+ok+' succeeded, '+(jobs.length-ok)+' failed. Review result log.');
+ cancelBulkPlan();render();
+}
+function exportAudit(){if(!bulkAudit.length)return;const fields=['time','portal','id','title','action','outcome','detail'];download('geogovern-bulk-results-'+new Date().toISOString().slice(0,10)+'.csv',[fields.map(escCSV).join(','),...bulkAudit.map(o=>fields.map(k=>escCSV(o[k])).join(','))].join('\r\n'),'text/csv;charset=utf-8')}
+$('checkVisible').onchange=e=>selectMany((state.filteredIds||[]).slice(0,100),e.target.checked);
+$('selectFiltered').onclick=()=>selectMany((state.filteredIds||[]).slice(0,100),true);
+$('clearSelected').onclick=()=>selectMany([...bulkSelected],false);
+$('openBulk').onclick=()=>$('adminPanel').scrollIntoView({behavior:'smooth',block:'start'});
+$('bulkAction').onchange=actionFields;
+for(const id of ['bulkFolder','bulkTagMode','bulkTags','bulkText','bulkTitleMode','bulkTitleText'])$(id).addEventListener('input',cancelBulkPlan);
+$('previewBulk').onclick=previewChanges;
+$('bulkAcknowledged').onchange=()=>{$('bulkApply').disabled=!($('bulkAcknowledged').checked&&$('bulkPhrase').value.trim()==='APPLY')};
+$('bulkPhrase').oninput=()=>{$('bulkApply').disabled=!($('bulkAcknowledged').checked&&$('bulkPhrase').value.trim()==='APPLY')};
+$('bulkApply').onclick=applyChanges;
+$('exportAudit').onclick=exportAudit;
+$('rows').addEventListener('change',e=>{if(e.target.matches('[data-checkbox]')){selectMany([e.target.dataset.checkbox],e.target.checked)}});
+$('source').onchange=filterRows;$('statusFilter').onchange=filterRows;$('riskFilter').onchange=filterRows;$('archiveFilter').onchange=filterArchive;$('archiveSearch').oninput=filterArchive;$('archiveExport').onclick=exportArchive;$('archiveRows').addEventListener('click',e=>{const r=e.target.closest('[data-arch-id]');if(r){select(r.dataset.archId);$('graph').scrollIntoView({behavior:'smooth',block:'center'});const tab=$('detail').querySelector('[data-tab="archive"]');if(tab)tab.click();}});
+actionFields();
+
+$('demo').onclick=demo;$('login').onclick=()=>auth(false);$('mine').onclick=()=>load('mine');$('org').onclick=()=>load('org');$('refresh').onclick=()=>load(state.scope==='org'?'org':'mine');$('stop').onclick=()=>{state.stopped=true;setStatus('Stopping after outstanding item reads…')};$('search').oninput=filterRows;$('type').onchange=filterRows;$('folder').onchange=filterRows;$('sort').onchange=filterRows;$('rows').addEventListener('click',e=>{if(e.target.closest('[data-checkbox]'))return;const tr=e.target.closest('[data-id]');if(tr)select(tr.dataset.id)});$('graph').addEventListener('click',e=>{const b=e.target.closest('[data-select]');if(b)select(b.dataset.select)});$('detail').addEventListener('click',e=>{const b=e.target.closest('[data-select]');if(b)select(b.dataset.select)});$('json').onclick=()=>download('agol-dependencies-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(snapshot(),null,2),'application/json');$('csv').onclick=()=>{const fields=['id','title','type','source_type','content_status','protected','owner','access','folder','size_bytes','estimated_credits_month','modified','direct_references','downstream_references','uses','referenced_by_ids','dependency_ids'];const lines=[fields.map(escCSV).join(',')];state.items.forEach(i=>{const c=counts(i.id),rec=[i.id,i.title,i.type,sourceType(i).name,i.contentStatus||'',i.protected??'',i.owner,i.access,folderLabel(i),i.size??'',creditEstimate(i).amount??'',i.modified?new Date(i.modified).toISOString():'',c.direct,c.down,c.depends,inward(i.id).join(';'),outward(i.id).join(';')];lines.push(rec.map(escCSV).join(','))});download('agol-inventory-'+new Date().toISOString().slice(0,10)+'.csv',lines.join('\r\n'),'text/csv;charset=utf-8')};$('importBtn').onclick=()=>$('file').click();$('file').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='agol-dependency-explorer-v1'||!Array.isArray(data.items)||!Array.isArray(data.edges))throw Error('Not a valid AGOL dependency snapshot');state.items=data.items;state.edges=data.edges;state.portal=data.portal||'https://www.arcgis.com';state.scope='snapshot';state.partial=!!data.partial;bulkSelected.clear();cancelBulkPlan();state.selected=null;$('scope').textContent='Imported snapshot';setStatus('Imported '+state.items.length+' items from '+file.name);render()}catch(error){setStatus('Import failed: '+error.message,true)}e.target.value=''};
+// Public OAuth configuration is non-secret; keep it outside the normal dashboard screen.
+// Existing browser configuration takes precedence over the preconfigured application ID.
+const DEFAULT_PORTAL='https://aucklandcouncil.maps.arcgis.com';
+const DEFAULT_CLIENT_ID='wrofPqmiAFcM3qSl'; // Public OAuth Client ID from registered ArcGIS app. Change via ⚙ Connection if needed.
+try{$('appId').value=localStorage.getItem('agol_governance_client_id')||sessionStorage.getItem('agol_governance_client_id')||DEFAULT_CLIENT_ID;
+    $('portal').value=localStorage.getItem('agol_governance_portal')||sessionStorage.getItem('agol_governance_portal')||DEFAULT_PORTAL;
+    $('themeBtn').textContent=localStorage.getItem('geogovern_theme')==='contrast'?'◐ Softer theme':'◐ Contrast';
+    if(localStorage.getItem('geogovern_theme')==='contrast')document.body.classList.add('theme-contrast');
+}catch(_){$('appId').value=DEFAULT_CLIENT_ID;$('portal').value=DEFAULT_PORTAL}
+$('gateClient').value=$('appId').value;$('gatePortal').value=$('portal').value;
+$('gateLogin').onclick=()=>{syncGate();clearAutoAttempt();auth(false)};
+$('gateDemo').onclick=()=>{demo();showApp();$('account').textContent='Demo mode · Not connected';};
+$('settingsBtn').onclick=()=>{showGate();$('gateClient').value=$('appId').value;$('gatePortal').value=$('portal').value;$('connectionSetup').open=true;$('gateError').textContent='Update connection settings or select Sign in to continue.'};
+$('themeBtn').onclick=()=>{const contrast=document.body.classList.toggle('theme-contrast');$('themeBtn').textContent=contrast?'◐ Softer theme':'◐ Contrast';try{localStorage.setItem('geogovern_theme',contrast?'contrast':'soft')}catch(_){}};
+$('creditExport').onclick=exportCredits;
+$('creditTop').onclick=e=>{const b=e.target.closest('[data-credit-item]');if(!b)return;select(b.dataset.creditItem);$('graph').scrollIntoView({behavior:'smooth',block:'start'})};
+function autoSignIn(){
+  if(!$('appId').value.trim()){showGate('Configure your OAuth Client ID once under Connection settings.');$('connectionSetup').open=true;return}
+  let alreadyTried=false;
+  try{alreadyTried=sessionStorage.getItem('geogovern_auto_attempt')==='1'}catch(_){ }
+  // OAuth returns to this page. On the return trip restore the token rather than looping.
+  if(alreadyTried){auth(true);return}
+  try{sessionStorage.setItem('geogovern_auto_attempt','1')}catch(_){ }
+  auth(false);
+}
+autoSignIn();
+})();
+</script></body></html>
